@@ -1,8 +1,8 @@
 ---
 # Configuration of the Cycloid stack
 version: '2'
-name: 'demo-ec2'
-canonical: 'stack-aws-sample'
+name: 'notes-aws'
+canonical: 'stack-notes-aws'
 keywords:
   - 'ec2'
   - 'aws'
@@ -10,7 +10,7 @@ keywords:
   - 'provider:aws'
 status: 'private'
 description: |
-  This stack will deploy a demo application with Cassandra, a java-based API, an Angular front and an Application Load Balancer on AWS EC2 compute instances.
+  This stack will deploy a notes application with Cassandra, a java-based API, an Angular front and an Application Load Balancer on AWS (for demo purposes).
 author: 'Olivier de Turckheim'
 image: 'https://raw.githubusercontent.com/cycloid-community-catalog/docs-step-by-step-stack/stack-aws/icon.png'
 technologies:
@@ -19,7 +19,7 @@ technologies:
 
 config:
   default:
-    name: 'Basic deployment'
+    name: 'Default deployment'
     description: 'This pipeline will deploy a demo application'
 
     # Configuration of the CI pipeline
@@ -28,4 +28,16 @@ config:
         path: 'pipeline/pipeline.yml'
       variables:
         path: 'pipeline/variables.sample.yml'
-        destination: '($ project $)/pipeline/($ environment $)/variables.yml'
+        destination: '($ project $)/pipeline/variables-($ environment $).yml'
+
+    # Configuration of ansible for provisionning
+    ansible:
+      cassandra:
+        path: 'ansible/environments/front.yml.sample'
+        destination: '($ project $)/ansible/($ environment $)-front.yml'
+
+    # Configuration of terraform to setup the infrastructure
+    terraform:
+      cassandra:
+        path: 'terraform/cassandra.tf.sample'
+        destination: '($ project $)/terraform/($ environment $)/cassandra.tf'
