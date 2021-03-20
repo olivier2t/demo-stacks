@@ -1,0 +1,31 @@
+---
+# Configuration of the Cycloid stack
+version: '2'
+name: 'demo-ec2'
+canonical: 'stack-aws-sample'
+keywords:
+  - 'ec2'
+  - 'aws'
+  - 'instance'
+  - 'provider:aws'
+status: 'private'
+description: |
+  This stack will deploy a demo application with Cassandra, a java-based API, an Angular front and an Application Load Balancer on AWS EC2 compute instances.
+author: 'Olivier de Turckheim'
+image: 'https://raw.githubusercontent.com/cycloid-community-catalog/docs-step-by-step-stack/stack-aws/icon.png'
+technologies:
+  - technology: Cassandra
+    version: n/a
+
+config:
+  default:
+    name: 'Basic deployment'
+    description: 'This pipeline will deploy a demo application'
+
+    # Configuration of the CI pipeline
+    pipeline:
+      pipeline:
+        path: 'pipeline/pipeline.yml'
+      variables:
+        path: 'pipeline/variables.sample.yml'
+        destination: '($ project $)/pipeline/($ environment $)/variables.yml'

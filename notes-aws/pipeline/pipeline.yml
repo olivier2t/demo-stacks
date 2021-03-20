@@ -1,0 +1,110 @@
+# YAML anchors
+shared:
+
+  # Task : sync and merge with rsync 2 rep. Used to merge stack and config
+  - &merge-stack-and-config
+    platform: linux
+    image_resource:
+      type: docker-image
+      source:
+        repository: cycloid/cycloid-toolkit
+        tag: latest
+    run:
+      path: /usr/bin/merge-stack-and-config
+    outputs:
+    - name: merged-stack
+      path: "merged-stack"
+
+  # Task : connect on the bastion server and run ansible from it
+  - &run-ansible-from-bastion
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: cycloid/cycloid-toolkit
+          tag: v((ansible_version))
+      run:
+        path: /usr/bin/ansible-runner
+      caches:
+        - path: ansible-playbook/roles
+      inputs:
+      - name: merged-stack
+        path: ansible-playbook
+
+
+groups:
+- name: infra
+  jobs:
+  - terraform-plan
+  - terraform-apply
+
+- name: destroy
+  jobs:
+  - terraform-destroy
+
+resource_types:
+- name: terraform
+  type: docker-image
+  source:
+    repository: ljfranklin/terraform-resource
+    tag: '0.12.6'
+
+resources:
+- name: tfstate
+  type: terraform
+  icon: terraform
+  source:
+    env_name: ((env))
+    backend_type: s3
+    backend_config:
+      bucket: ((terraform_storage_bucket_name))
+      key: ((project))-((env)).tfstate
+      workspace_key_prefix: ((project))
+      region: ((aws_default_region))
+      access_key: ((aws_access_key))
+      secret_key: ((aws_secret_key))
+    vars:
+      access_key: ((aws_access_key))
+      secret_key: ((aws_secret_key))
+      env: ((env))
+      project: ((project))
+      customer: ((customer))
+      aws_region: ((aws_default_region))
+      cassandra_password: ((cassandra_password))
+    env:
+      AWS_ACCESS_KEY_ID: ((aws_access_key))
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
+
+- name: git_stack-terraform
+  type: git
+  icon: github-circle
+  source:
+    uri: ((olivier2t-cycloid_git_repository))
+    branch: ((stack_git_branch))
+    path: notes-ec2/terraform/*
+
+- name: git_config-terraform
+  type: git
+  icon: github-circle
+  source:
+    uri: ((olivier2t-cycloid_git_repository))
+    branch: ((config_git_branch))
+    private_key: ((config_git_private_key))
+    path: notes-ec2/terraform/*
+
+- name: git_api
+  type: git
+  source:
+    uri: ((api_git_repository))
+    branch: ((api_git_branch))
+
+jobs:
+  - name: unittest
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+    - do:
+      - get: git_api
+        trigger: true
