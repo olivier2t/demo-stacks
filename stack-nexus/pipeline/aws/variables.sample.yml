@@ -49,9 +49,9 @@ config_git_private_key: ((git_github.ssh_key))
 #+ Path of Terraform files in the config git repository
 config_terraform_path: ($ project $)/terraform/aws/($ environment $)
 
-#. config_ansible_path (required): ($ project $)/ansible
+#. config_ansible_path (required): ($ project $)/ansible/environments
 #+ Path of Ansible files in the config git repository
-config_ansible_path: ($ project $)/ansible
+config_ansible_path: ($ project $)/ansible/environments
 
 #. stack_git_repository (required): https://github.com/olivier2t/demo-stacks.git
 #+ Git repository URL containing the stack.
