@@ -53,9 +53,9 @@ config_terraform_path: ($ project $)/terraform/aws/($ environment $)
 #+ Path of Ansible files in the config git repository
 config_ansible_path: ($ project $)/ansible/environments/($ environment $)
 
-#. stack_git_repository (required): https://github.com/olivier2t/public-demos.git
+#. stack_git_repository (required): https://github.com/olivier2t/demo-stacks.git
 #+ Git repository URL containing the stack.
-stack_git_repository: https://github.com/olivier2t/public-demos.git
+stack_git_repository: https://github.com/olivier2t/demo-stacks.git
 
 #. stack_git_branch (required): master
 #+ Branch to use on the stack Git repository.
