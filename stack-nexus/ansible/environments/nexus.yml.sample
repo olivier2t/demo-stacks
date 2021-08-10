@@ -1,0 +1,3 @@
+---
+# customize variables present in default_jenkins.yaml file
+nexus_port: "8081"

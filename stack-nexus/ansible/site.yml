@@ -1,7 +1,14 @@
 ---
-- name: install java JDK
-  hosts: all
-  remote_user: {{ bastion_user }}
+- name: install Nexus Repository
+  hosts: tag_role_nexus:&tag_project_{{ project }}:&tag_cycloid_io_true:&tag_env_{{ env }}
   become: yes
+
+  vars_files:
+    - "environments/default_nexus.yml"
+    - ["environments/{{ env }}-nexus.yml", "environments/empty.yml"]
+
+  vars:
+    java_version: 8
+
   roles:
   - java

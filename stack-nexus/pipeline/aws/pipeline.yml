@@ -182,11 +182,11 @@ jobs:
       - in_parallel:
         - get: git_stack-ansible
           params: {depth: 1}
-          trigger: false
+          trigger: true
 
         - get: git_config-ansible
           params: {depth: 1}
-          trigger: false
+          trigger: true
 
         - get: tfstate
           trigger: true
@@ -232,7 +232,10 @@ jobs:
         params:
           #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
           SSH_PRIVATE_KEY: ((keypair_private))
-          ANSIBLE_PLAYBOOK_PATH: ansible-playbook/
+          AWS_ACCESS_KEY_ID: ((aws_access_key))
+          AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
+          AWS_DEFAULT_REGION: ((aws_region))
+          ANSIBLE_PLAYBOOK_PATH: ansible-playbook
           ANSIBLE_PLAYBOOK_NAME: site.yml
           EXTRA_ANSIBLE_VARS:
             env: (env)
