@@ -41,14 +41,14 @@ infra-aws:
         type: string
         widget: cy_crs
         description: "Git repository URL containing the config of the stack."
-        default: "git@github.com:olivier2t/config.git"
+        default: "git@github.com:cycloidio/cycloid-stacks-test.git"
         required: true
       - name: "Config git key"
         description: "SSH key pair to fetch the config Git repository."
         key: git_private_key
         type: string
         widget: cy_cred
-        default: "((ssh_github.ssh_key))"
+        default: "((git_github.ssh_key))"
         required: true
       - name: "Config branch"
         description: "Branch of the config Git repository."
@@ -56,7 +56,7 @@ infra-aws:
         widget: cy_branch
         type: string
         source: git_repository
-        default: "main"
+        default: "config"
         required: true
 
   terraform:
