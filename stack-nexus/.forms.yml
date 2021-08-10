@@ -1,5 +1,5 @@
 ---
-infra-aws:
+aws:
   pipeline:
     Cloud Provider:
       - name: "AWS access key"

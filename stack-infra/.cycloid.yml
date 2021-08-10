@@ -13,7 +13,7 @@ author: 'Olivier de Turckheim'
 image: 'https://raw.githubusercontent.com/olivier2t/stack-infra/main/icon.png'
 
 config:
-  infra-aws:
+  aws:
     name: 'Deploy on AWS'
     description: 'Deploy on AWS'
     cloud_provider: 'aws'

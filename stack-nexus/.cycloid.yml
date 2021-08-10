@@ -13,7 +13,7 @@ author: 'Olivier de Turckheim'
 image: 'https://raw.githubusercontent.com/olivier2t/stack-nexus/main/icon.png'
 
 config:
-  infra-aws:
+  aws:
     name: 'Deploy on AWS'
     description: 'Deploy on AWS'
     cloud_provider: 'aws'
@@ -27,10 +27,10 @@ config:
         destination: '($ project $)/pipeline/aws/($ environment $)/variables.yml'
 
     # Configuration of ansible for provisionning
-    # ansible:
-    #   front:
-    #     path: 'ansible/environments/main.yml'
-    #     destination: '($ project $)/ansible/environments/($ environment $)/main.yml'
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
 
     # Configuration of terraform
     terraform:
