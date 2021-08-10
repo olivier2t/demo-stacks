@@ -1,0 +1,108 @@
+#
+# Cloud Provider
+#
+
+# Amazon access to use to run terraform. Usually admin account to be able to create Amazon services.
+
+#. aws_access_key (required): ((aws_aws.access_key))
+#+ Amazon AWS access key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
+aws_access_key: ((aws_aws.access_key))
+
+#. aws_secret_key (required): ((aws_aws.secret_key))
+#+ Amazon AWS secret key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
+aws_secret_key: ((aws_aws.secret_key))
+
+#. aws_default_region (required): eu-west-1
+#+ Amazon AWS region to use for Terraform.
+aws_region: eu-west-1
+
+#. terraform_storage_bucket_name (required): ($ organization_canonical $)-terraform-remote-state
+#+ AWS S3 bucket name to store terraform remote state file.
+terraform_storage_bucket_name: ($ organization_canonical $)-terraform-remote-state
+
+#. keypair_public (required): ((custom_keypair.ssh_pub))
+#+ The public SSH key to provision to bastion for external access through SSH
+keypair_public: ((custom_keypair.ssh_pub))
+
+#. keypair_private (required): ((custom_keypair.ssh_prv))
+#+ The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion
+keypair_private: ((custom_keypair.ssh_prv))
+
+
+#
+# Stack Configuration
+#
+
+#. config_git_repository (required): git@github.com:olivier2t/config.git
+#+ Git repository URL containing the config of the stack.
+config_git_repository: git@github.com:olivier2t/config.git
+
+#. config_git_branch (required): config
+#+ Branch to use on the config Git repository.
+config_git_branch: main
+
+#. config_git_private_key (required): ((ssh_github.ssh_key))
+#+ SSH key pair to fetch the config Git repository.
+config_git_private_key: ((ssh_github.ssh_key))
+
+#. config_terraform_path (required): ($ project $)/terraform/aws/($ environment $)
+#+ Path of Terraform files in the config git repository
+config_terraform_path: ($ project $)/terraform/aws/($ environment $)
+
+#. config_ansible_path (required): ($ project $)/ansible/environments/($ environment $)
+#+ Path of Ansible files in the config git repository
+config_ansible_path: ($ project $)/ansible/environments/($ environment $)
+
+#. stack_git_repository (required): https://github.com/olivier2t/stack-nexus.git
+#+ Git repository URL containing the stack.
+stack_git_repository: https://github.com/olivier2t/stack-nexus.git
+
+#. stack_git_branch (required): master
+#+ Branch to use on the stack Git repository.
+stack_git_branch: main
+
+#. stack_terraform_path (required): terraform/aws
+#+ Path of Terraform files in the stack git repository
+stack_terraform_path: terraform/aws
+
+#. stack_ansible_path (required): ansible/environments
+#+ Path of Ansible files in the stack git repository
+stack_ansible_path: ansible/environments
+
+
+#
+# Nexus
+#
+
+#. instance_type (required): t3.micro
+#+ Instance type for the Nexus Repository.
+instance_type: t3.micro
+
+#. disk_size (required): 20
+#+ Disk size for the Nexus Repository (Go).
+disk_size: 20
+
+
+#
+# Default variables that shouldn't be changed except if needed
+#
+
+#. env (required): ($ environment $)
+#+ Name of the project's environment.
+env: ($ environment $)
+
+#. project (required): ($ project $)
+#+ Name of the project.
+project: ($ project $)
+
+#. customer (required): ($ organization_canonical $)
+#+ Name of the Cycloid Organization, used as customer variable name.
+customer: ($ organization_canonical $)
+
+#. terraform_version (required): '0.15.2'
+#+ terraform version used to execute your code.
+terraform_version: '0.15.2'
+
+#. cycloid-toolkit ansible version (required): 'v2.7'
+#+ cycloid-toolkit docker image tag to use (https://hub.docker.com/r/cycloid/cycloid-toolkit/tags).
+ansible_version: 'v2.7'

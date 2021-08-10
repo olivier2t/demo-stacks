@@ -1,0 +1,116 @@
+---
+infra-aws:
+  pipeline:
+    Cloud Provider:
+      - name: "AWS access key"
+        description: "Amazon AWS access key for Terraform."
+        key: aws_access_key
+        widget: cy_cred
+        type: string
+        default: "((aws_aws-olivier.access_key))"
+      - name: "AWS secret key"
+        description: "Amazon AWS secret key for Terraform."
+        key: aws_secret_key
+        widget: cy_cred
+        type: string
+        default: "((aws_aws-olivier.secret_key))"
+      - name: "Amazon AWS region"
+        description: "Amazon AWS region to use for Terraform."
+        key: aws_region
+        widget: auto_complete
+        type: string
+        values: ["eu-north-1","ap-south-1","eu-west-3","eu-west-2","eu-west-1","ap-northeast-2","ap-northeast-1","sa-east-1","ca-central-1","ap-southeast-1","ap-southeast-2","eu-central-1","us-east-1","us-east-2","us-west-1","us-west-2"]
+        default: eu-west-1
+      - name: "Terraform storage bucket"
+        description: "AWS S3 bucket name to store terraform remote state file."
+        key: terraform_storage_bucket_name
+        widget: simple_text
+        type: string
+        default: ($ organization_canonical $)-terraform-remote-state
+      - name: "Keypair public"
+        description: "The public SSH key, for SSH access to newly-created instances."
+        key: keypair_public
+        widget: cy_cred
+        type: string
+        required: false
+        default: "((custom_keypair.ssh_pub))"
+
+    Stack Configuration:
+      - name: "Config repository"
+        key: git_repository
+        type: string
+        widget: cy_crs
+        description: "Git repository URL containing the config of the stack."
+        default: "git@github.com:olivier2t/config.git"
+        required: true
+      - name: "Config git key"
+        description: "SSH key pair to fetch the config Git repository."
+        key: git_private_key
+        type: string
+        widget: cy_cred
+        default: "((ssh_github.ssh_key))"
+        required: true
+      - name: "Config branch"
+        description: "Branch of the config Git repository."
+        key: git_branch
+        widget: cy_branch
+        type: string
+        source: git_repository
+        default: "main"
+        required: true
+
+  terraform:
+    VPC:
+      - name: "VPC CIDR"
+        description: "The CIDR of the VPC."
+        key: cidr
+        widget: simple_text
+        type: string
+        required: true
+        default: "10.0.0.0/16"
+      - name: "Private subnets"
+        description: "The private subnets for the VPC."
+        key: private_subnets
+        widget: text_area
+        type: array
+        default:
+            - 10.0.1.0/24
+        required: true
+      - name: "Public subnets"
+        description: "The public subnets for the VPC."
+        key: public_subnets
+        widget: text_area
+        type: array
+        default:
+            - 10.0.0.0/24
+        required: true
+
+    Bastion:
+      - name: "Number of bastions"
+        description: "Number of bastions to create."
+        key: bastion_count
+        widget: slider_range
+        type: integer
+        default: 1
+        values:
+            - 0
+            - 2
+      - name: "Instance type"
+        description: "Instance type for the bastion."
+        key: bastion_instance_type
+        widget: auto_complete
+        type: string
+        default: "t3.micro"
+        values:
+            - t3.nano
+            - t3.micro
+            - t3.small
+            - t3.medium
+      - name: "Connection to bastion"
+        description: "Networks allowed to connect to the bastion using SSH."
+        key: bastion_allowed_networks
+        widget: text_area
+        type: array
+        required: true
+        default:
+            - 0.0.0.0/0

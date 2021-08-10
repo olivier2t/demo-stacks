@@ -1,0 +1,39 @@
+---
+# Configuration of the Cycloid stack
+version: '2'
+name: 'Nexus Repository OSS'
+canonical: 'stack-nexus'
+status: 'private'
+keywords:
+  - 'nexus'
+  - 'repository'
+description: |
+  This stack will deploy a Nexus Repository (open source version) in an existing VPC.
+author: 'Olivier de Turckheim'
+image: 'https://raw.githubusercontent.com/olivier2t/stack-nexus/main/icon.png'
+
+config:
+  infra-aws:
+    name: 'Deploy on AWS'
+    description: 'Deploy on AWS'
+    cloud_provider: 'aws'
+
+    # Pipeline and variable configuration for the AWS CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/aws/pipeline.yml'
+      variables:
+        path: 'pipeline/aws/variables.sample.yml'
+        destination: '($ project $)/pipeline/aws/($ environment $)/variables.yml'
+
+    # Configuration of ansible for provisionning
+    # ansible:
+    #   front:
+    #     path: 'ansible/environments/main.yml'
+    #     destination: '($ project $)/ansible/environments/($ environment $)/main.yml'
+
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/aws/main.tf'
+        destination: '($ project $)/terraform/aws/($ environment $)/main.tf'

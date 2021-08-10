@@ -1,0 +1,113 @@
+#
+# Cloud Provider
+#
+
+# Amazon access to use to run terraform. Usually admin account to be able to create Amazon services.
+
+#. aws_access_key (required): ((aws_aws.access_key))
+#+ Amazon AWS access key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
+aws_access_key: ((aws_aws.access_key))
+
+#. aws_secret_key (required): ((aws_aws.secret_key))
+#+ Amazon AWS secret key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
+aws_secret_key: ((aws_aws.secret_key))
+
+#. aws_default_region (required): eu-west-1
+#+ Amazon AWS region to use for Terraform.
+aws_region: eu-west-1
+
+#. terraform_storage_bucket_name (required): ($ organization_canonical $)-terraform-remote-state
+#+ AWS S3 bucket name to store terraform remote state file.
+terraform_storage_bucket_name: ($ organization_canonical $)-terraform-remote-state
+
+#. keypair_public (optional): ((custom_keypair.ssh_pub))
+#+ The public SSH key, for SSH access to newly-created instances
+keypair_public: ((custom_keypair.ssh_pub))
+
+
+#
+# Stack Configuration
+#
+
+#. config_git_repository (required): git@github.com:olivier2t/config.git
+#+ Git repository URL containing the config of the stack.
+config_git_repository: git@github.com:olivier2t/config.git
+
+#. config_git_branch (required): config
+#+ Branch to use on the config Git repository.
+config_git_branch: main
+
+#. config_git_private_key (required): ((ssh_github.ssh_key))
+#+ SSH key pair to fetch the config Git repository.
+config_git_private_key: ((ssh_github.ssh_key))
+
+#. config_terraform_path (required): ($ project $)/terraform/aws/($ environment $)
+#+ Path of Terraform files in the config git repository
+config_terraform_path: ($ project $)/terraform/aws/($ environment $)
+
+#. stack_git_repository (required): https://github.com/olivier2t/stack-infra.git
+#+ Git repository URL containing the stack.
+stack_git_repository: https://github.com/olivier2t/stack-infra.git
+
+#. stack_git_branch (required): master
+#+ Branch to use on the stack Git repository.
+stack_git_branch: main
+
+#. stack_terraform_path (required): terraform/aws
+#+ Path of Terraform files in the stack git repository
+stack_terraform_path: terraform/aws
+
+
+#
+# VPC
+#
+
+#. cidr (required): '10.0.0.0/16'
+#+ The CIDR of the VPC.
+cidr: '10.0.0.0/16'
+
+#. private_subnets (required): ['10.0.1.0/24']
+#+ The private subnets for the VPC.
+private_subnets: ['10.0.1.0/24']
+
+#. public_subnets (required): ['10.0.0.0/24']
+#+ The public subnets for the VPC.
+public_subnets: ['10.0.0.0/24']
+
+
+#
+# Bastion
+#
+
+#. bastion_count (required): 0
+#+ Number of bastions to create.
+bastion_count: 1
+
+#. bastion_instance_type (required): t3.small
+#+ Instance type for the bastion.
+bastion_instance_type: t3.small
+
+#. bastion_allowed_networks (required): ['0.0.0.0/0']
+#+ Networks allowed to connect to the bastion using SSH.
+bastion_allowed_networks: ['0.0.0.0/0']
+
+
+#
+# Default variables that shouldn't be changed except if needed
+#
+
+#. env (required): ($ environment $)
+#+ Name of the project's environment.
+env: ($ environment $)
+
+#. project (required): ($ project $)
+#+ Name of the project.
+project: ($ project $)
+
+#. customer (required): ($ organization_canonical $)
+#+ Name of the Cycloid Organization, used as customer variable name.
+customer: ($ organization_canonical $)
+
+#. terraform_version (required): '0.15.2'
+#+ terraform version used to execute your code.
+terraform_version: '0.15.2'

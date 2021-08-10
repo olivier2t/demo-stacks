@@ -1,0 +1,7 @@
+---
+- name: install java JDK
+  hosts: all
+  remote_user: {{ bastion_user }}
+  become: yes
+  roles:
+  - java

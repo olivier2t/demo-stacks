@@ -1,0 +1,12 @@
+---
+# tasks file for common
+# All common instructions for all instances in all environments
+- name: install ntp
+  apt: name: ntp state: latest
+
+- name: install monit
+  apt: name: monit state: latest
+
+- name: copy monit config
+  copy: src: monitrc dest: /etc/monit/monitrc owner: root group: root mode: 0600
+  notify: restart monit

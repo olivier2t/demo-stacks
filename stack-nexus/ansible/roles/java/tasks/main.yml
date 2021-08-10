@@ -1,0 +1,16 @@
+---
+- name: Ensure Java is installed.
+  apt:
+    name: "openjdk-{{ java_version }}-jdk"
+    state: present
+
+- name: make sure /etc/profile.d exists
+  file: 
+    path: /etc/profile.d
+    state: directory
+
+- name: export JAVA_HOME
+  template:
+    src:  java_home.sh.j2
+    dest: /etc/profile.d/java_home.sh
+    mode: "a+x"

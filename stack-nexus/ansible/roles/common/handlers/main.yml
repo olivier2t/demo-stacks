@@ -1,0 +1,7 @@
+---
+# handlers file for common
+- name: restart monit
+  systemd:
+    name: monit
+    enabled: yes
+    state: restarted
