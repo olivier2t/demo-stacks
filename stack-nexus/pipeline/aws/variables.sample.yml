@@ -65,9 +65,9 @@ stack_git_branch: main
 #+ Path of Terraform files in the stack git repository
 stack_terraform_path: stack-nexus/terraform/aws
 
-#. stack_ansible_path (required): stack-nexus/ansible/environments
+#. stack_ansible_path (required): stack-nexus/ansible
 #+ Path of Ansible files in the stack git repository
-stack_ansible_path: stack-nexus/ansible/environments
+stack_ansible_path: stack-nexus/ansible
 
 
 #
