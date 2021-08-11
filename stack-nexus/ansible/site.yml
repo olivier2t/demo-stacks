@@ -84,7 +84,7 @@
     copy:
       src: /opt/nexus-3*
       dest: /opt/nexus
-    remote_src: true
+      remote_src: true
 
   - name: copy nexus.rc
     copy:
