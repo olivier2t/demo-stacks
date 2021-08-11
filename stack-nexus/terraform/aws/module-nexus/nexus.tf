@@ -1,7 +1,7 @@
 resource "aws_security_group" "nexus" {
   name        = "nexus"
   description = "Allow accessing the Nexus Repository service from the internet."
-  vpc_id      = var.vpc_id
+  vpc_id      = module.infra_vpc.vpc_id
 
   ingress {
     from_port   = 22
@@ -25,7 +25,7 @@ resource "aws_security_group" "nexus" {
   }
 
   tags = merge(local.merged_tags, {
-    Name       = "nexus"
+    Name       = "${var.customer}-${var.env}-nexus"
   })
 }
 
@@ -34,18 +34,13 @@ resource "aws_eip" "nexus" {
   vpc      = true
 
   tags = merge(local.merged_tags, {
-    Name       = "${var.customer}-nexus"
+    Name       = "${var.customer}-${var.env}-nexus"
   })
-}
-
-resource "aws_key_pair" "nexus" {
-  key_name   = "nexus-key"
-  public_key = var.keypair_public
 }
 
 resource "aws_instance" "nexus" {
   ami           = data.aws_ami.debian.id
-  instance_type = var.instance_type
+  instance_type = var.nexus_instance_type
   key_name      = aws_key_pair.nexus.key_name
 
   vpc_security_group_ids = [aws_security_group.nexus.id]
@@ -54,12 +49,12 @@ resource "aws_instance" "nexus" {
   disable_api_termination = false
 
   root_block_device {
-    volume_size           = var.disk_size
+    volume_size           = var.nexus_disk_size
     delete_on_termination = true
   }
 
   tags = merge(local.merged_tags, {
-    Name       = "${var.customer}-nexus"
+    Name       = "${var.customer}-${var.env}-nexus"
     role       = "nexus"
   })
 

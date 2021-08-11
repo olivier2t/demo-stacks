@@ -41,13 +41,6 @@ aws:
         type: string
         required: true
         default: "((custom_keypair.ssh_prv))"
-      # - name: "Bastion Jump URL"
-      #   description: "The bastion URL allowing to jump to the Nexus Repository instance in the private VPC (for example admin@52.210.6.203)."
-      #   key: bastion_url
-      #   widget: simple_text
-      #   type: string
-      #   required: true
-      #   default: "admin@52.210.6.203"
 
     Stack Configuration:
       - name: "Config repository"
@@ -74,14 +67,51 @@ aws:
         required: true
 
   terraform:
-    # VPC:
-    #   - name: "VPC ID"
-    #     description: "Amazon VPC ID where the Nexus Repository will be created."
-    #     key: vpc_id
-    #     widget: simple_text
-    #     type: string
-    #     required: true
-    #     default: "vpc-08fe585e0a3fb91c1"
+    VPC:
+      - name: "VPC CIDR"
+        description: "The CIDR of the VPC."
+        key: cidr
+        widget: simple_text
+        type: string
+        required: true
+        default: "10.0.0.0/16"
+      - name: "Private subnets"
+        description: "The private subnets for the VPC."
+        key: private_subnets
+        widget: text_area
+        type: array
+        default:
+            - 10.0.1.0/24
+        required: true
+      - name: "Public subnets"
+        description: "The public subnets for the VPC."
+        key: public_subnets
+        widget: text_area
+        type: array
+        default:
+            - 10.0.0.0/24
+        required: true
+
+    Bastion:
+      - name: "Instance type"
+        description: "Instance type for the bastion."
+        key: bastion_instance_type
+        widget: auto_complete
+        type: string
+        default: "t3.micro"
+        values:
+            - t3.nano
+            - t3.micro
+            - t3.small
+            - t3.medium
+      - name: "Connection to bastion"
+        description: "Networks allowed to connect to the bastion using SSH."
+        key: bastion_allowed_networks
+        widget: text_area
+        type: array
+        required: true
+        default:
+            - 0.0.0.0/0
 
     Nexus:
       - name: "Instance type"
