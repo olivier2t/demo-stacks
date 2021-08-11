@@ -98,12 +98,11 @@ aws:
         key: bastion_instance_type
         widget: auto_complete
         type: string
-        default: "t3.micro"
+        default: "t3a.micro"
         values:
-            - t3.nano
-            - t3.micro
-            - t3.small
-            - t3.medium
+            - t3a.nano
+            - t3a.micro
+            - t3a.small
       - name: "Connection to bastion"
         description: "Networks allowed to connect to the bastion using SSH."
         key: bastion_allowed_networks
@@ -119,13 +118,13 @@ aws:
         key: nexus_instance_type
         widget: auto_complete
         type: string
-        default: "t3.micro"
+        default: "t3a.medium"
         values:
-            - t3.nano
-            - t3.micro
-            - t3.small
-            - t3.medium
-            - t3.large
+            - t3a.small
+            - t3a.medium
+            - t3a.large
+            - t3a.xlarge
+            - t3a.2xlarge
       - name: "Disk size"
         unit: Go
         description: "Disk size for the Nexus Repository."
