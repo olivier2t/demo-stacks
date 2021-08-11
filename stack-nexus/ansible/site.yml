@@ -78,6 +78,13 @@
       patterns: 'nexus-3*'
     register: nexus_dir
 
+  - name: "Debug"
+    debug:
+      var: nexus_dir
+  - name: "Debug"
+    debug:
+      var: nexus_dir.files
+
   - name: move nexus directory
     copy:
       src: "{{ item.path }}"
