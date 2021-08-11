@@ -62,12 +62,16 @@
       mode: "a+x"
 
   # Installing Nexus Repository
-  - name: create /opt/nexus directory
+  - name: Remove old nexus directory if present
     file:
-      path: "/opt/nexus"
-      state: directory
-      mode: 0755
-
+      path: /opt/nexus
+      state: absent
+  
+  - name: Remove old sonatype-work directory if present
+    file:
+      path: /opt/sonatype-work
+      state: absent
+  
   - name: Download and unarchive Nexus Repository installer
     unarchive:
       src: "https://download.sonatype.com/nexus/3/latest-unix.tar.gz"
@@ -76,8 +80,11 @@
       owner: nexus
       group: nexus
 
-  - name: rename directory to nexus
-    command: mv nexus-3* nexus
+  - name: rename app directory to nexus
+    copy:
+      src: /opt/nexus-3*
+      dest: /opt/nexus
+    remote_src: true
 
   - name: copy nexus.rc
     copy:
