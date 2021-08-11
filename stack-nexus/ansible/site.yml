@@ -11,4 +11,4 @@
     java_version: 8
 
   roles:
-  - java
+  - geerlingguy.java

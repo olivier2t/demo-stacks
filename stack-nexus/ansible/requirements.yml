@@ -1,4 +1,4 @@
 ---
-- src: https://github.com/jdauphant/ansible-role-nginx.git
-  name: jdauphant.nginx
+- src: geerlingguy/ansible-role-java
+  name: geerlingguy.java
   scm: git
