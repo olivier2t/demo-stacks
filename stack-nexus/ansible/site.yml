@@ -49,7 +49,6 @@
 
 
   roles:
-  - olivier2t.common
   - geerlingguy.java
 
 
