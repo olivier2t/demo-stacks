@@ -74,21 +74,6 @@
     shell: ls -d /opt/nexus-3*
     register: dir_nexus
   - command: mv {{ dir_nexus.stdout }} /opt/nexus
-    # args:
-    #   chdir: "/opt"
-
-  # - name: rename nexus directory
-  #   command: mv /opt/nexus-3* /opt/nexus
-  #   become: yes
-
-  # - name: create link to nexus directory
-  #   file:
-  #     src: /opt/nexus
-  #     dest: /opt/nexus-3*
-  #     owner: nexus
-  #     group: nexus
-  #     state: link
-  #     remote_src: yes
 
   - name: copy nexus.rc
     copy:
@@ -108,6 +93,10 @@
   - name: Enable a timer unit for dnf-automatic
     systemd:
       name: nexus.service
-      state: started
       enabled: yes
       daemon_reload: yes
+
+  - name: Restart service nexus
+    service:
+      name: nexus.service
+      state: restarted
