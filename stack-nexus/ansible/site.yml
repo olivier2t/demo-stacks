@@ -85,7 +85,7 @@
       owner: nexus
       group: nexus
       remote_src: yes
-      with_items: "{{ nexus_dir.files }}"
+    with_items: "{{ nexus_dir.files }}"
 
   - name: move sonatype-work directory
     copy:
