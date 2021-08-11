@@ -70,9 +70,17 @@
       owner: nexus
       group: nexus
 
-  - name: rename nexus directory
-    command: mv /opt/nexus-3* /opt/nexus
-    become: yes
+  # - name: rename nexus directory
+  #   command: mv /opt/nexus-3* /opt/nexus
+  #   become: yes
+
+  - name: create link to nexus directory
+  ansible.builtin.file:
+    src: /opt/nexus-3*
+    dest: /opt/nexus
+    owner: nexus
+    group: nexus
+    state: link
 
   - name: copy nexus.rc
     copy:
