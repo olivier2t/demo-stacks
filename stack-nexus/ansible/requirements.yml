@@ -2,3 +2,6 @@
 - src: https://github.com/geerlingguy/ansible-role-java.git
   name: geerlingguy.java
   scm: git
+- src: https://github.com/olivier2t/ansible-role-common.git
+  name: olivier2t.common
+  scm: git
