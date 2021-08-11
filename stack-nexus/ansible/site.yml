@@ -80,6 +80,7 @@
     command: mv nexus-3* nexus
 
   - name: copy nexus.rc
+    copy:
       src: nexus.rc
       dest: /opt/nexus/bin/nexus.rc
       owner: nexus
@@ -87,6 +88,7 @@
 
  # Installing nexus as a service and enable it
   - name: copy nexus.service
+    copy:
       src: nexus.service
       dest: /etc/systemd/system/nexus.service
       owner: nexus
