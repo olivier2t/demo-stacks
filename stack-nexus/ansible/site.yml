@@ -81,6 +81,7 @@
       owner: nexus
       group: nexus
       state: link
+      remote_src: yes
 
   - name: copy nexus.rc
     copy:
