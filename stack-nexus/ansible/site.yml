@@ -53,7 +53,7 @@
       path: /etc/profile.d
       state: directory
 
-  - name: export JAVA_HOME
+  - name: export JAVA_HOME and add its bin dir in the PATH
     template:
       src:  java_home.sh.j2
       dest: /etc/profile.d/java_home.sh
@@ -67,5 +67,5 @@
   post_tasks:
   - name: Download and unarchive Nexus Repository installer
     unarchive:
-      src: https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+      src: "https://download.sonatype.com/nexus/3/latest-unix.tar.gz"
       dest: /tmp
