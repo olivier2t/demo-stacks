@@ -105,8 +105,8 @@
   #   with_fileglob:
   #     - "/opt/nexus-3*"
 
-  - name: Run command if /opt/nexus does not exist
-    ansible.builtin.command: sudo mv /opt/nexus-3* /opt/nexus
+  - name: rename nexus directory
+    command: sudo mv /opt/nexus-3* /opt/nexus
 
   - name: copy nexus.rc
     copy:
