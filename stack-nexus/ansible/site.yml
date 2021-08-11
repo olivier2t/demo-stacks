@@ -70,11 +70,12 @@
       owner: nexus
       group: nexus
 
-  - shell: ls -d /opt/nexus-3*
+  - name: rename nexus directory
+    shell: ls -d /opt/nexus-3*
     register: dir_nexus
   - command: mv {{ dir_nexus.stdout }} /opt/nexus
-    args:
-      chdir: "/opt"
+    # args:
+    #   chdir: "/opt"
 
   # - name: rename nexus directory
   #   command: mv /opt/nexus-3* /opt/nexus
