@@ -70,15 +70,30 @@
       owner: nexus
       group: nexus
 
+  - name: Find /tmp all directories starting with nexus-3
+    find:
+      paths: /tmp
+      recurse: no
+      file_type: directory
+      patterns: 'nexus-3*'
+    register: nexus_dir
+
   - name: move nexus directory
-    command: mv /tmp/nexus-3* /opt/nexus
-    args:
-      creates: /opt/nexus
+    copy:
+      src: {{ item.path }}
+      dest: /opt/nexus
+      owner: nexus
+      group: nexus
+      remote_src: yes
+      with_items: "{{ nexus_dir.files }}"
 
   - name: move sonatype-work directory
-    command: mv /tmp/sonatype-work /opt/sonatype-work
-    args:
-      creates: /opt/sonatype-work
+    copy:
+      src: /tmp/sonatype-work
+      dest: /opt/sonatype-work
+      owner: nexus
+      group: nexus
+      remote_src: yes
 
   - name: copy nexus.rc
     copy:
