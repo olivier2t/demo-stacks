@@ -12,3 +12,4 @@
 
   roles:
   - geerlingguy.java
+  - nexus
