@@ -7,8 +7,9 @@
     - "environments/default_nexus.yml"
     - ["environments/{{ env }}-nexus.yml", "environments/empty.yml"]
 
-  # vars:
-  #   java_version: 8
+  vars:
+    java_version: 8
+    java_home: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64"
 
 
   pre_tasks:
@@ -42,14 +43,25 @@
       limit_item: nofile
       value: 65536
 
-  # - name: Install gtar (unarchive module prerequisite) 
-  #   apt:
-  #     name: gtar
-  #     state: latest
+  - name: Install openjdk 8.
+    apt:
+      name: "openjdk-{{ java_version }}-jdk"
+      state: present
+
+  - name: make sure /etc/profile.d exists
+    file: 
+      path: /etc/profile.d
+      state: directory
+
+  - name: export JAVA_HOME
+    template:
+      src:  java_home.sh.j2
+      dest: /etc/profile.d/java_home.sh
+      mode: "a+x"
 
 
-  roles:
-  - geerlingguy.java
+  # roles:
+  # - geerlingguy.java
 
 
   post_tasks:

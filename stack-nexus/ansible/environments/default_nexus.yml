@@ -1,3 +1,4 @@
 ---
-java_home: "/usr/lib/jvm/java-*-openjdk-amd64"
+java_version: 8
+java_home: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64"
 nexus_port: "8081"
