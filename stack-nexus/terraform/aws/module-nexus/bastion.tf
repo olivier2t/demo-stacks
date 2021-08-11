@@ -64,7 +64,7 @@ resource "aws_instance" "bastion" {
 
   vpc_security_group_ids = [aws_security_group.bastion.id]
 
-  subnet_id = var.public_subnets[0]
+  subnet_id = element(module.infra_vpc.public_subnets, 0)
   disable_api_termination = false
 
   tags = merge(local.merged_tags, {
