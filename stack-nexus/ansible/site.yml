@@ -65,7 +65,7 @@
   - name: Download and unarchive Nexus Repository installer
     unarchive:
       src: "https://download.sonatype.com/nexus/3/latest-unix.tar.gz"
-      dest: "/tmp"
+      dest: "/opt"
       remote_src: yes
       owner: nexus
       group: nexus
@@ -87,13 +87,13 @@
   #     remote_src: yes
   #   with_items: "{{ nexus_dir.files }}"
 
-  - name: move sonatype-work directory
-    copy:
-      src: /tmp/sonatype-work
-      dest: /opt/sonatype-work
-      owner: nexus
-      group: nexus
-      remote_src: yes
+  # - name: move sonatype-work directory
+  #   copy:
+  #     src: /tmp/sonatype-work
+  #     dest: /opt/sonatype-work
+  #     owner: nexus
+  #     group: nexus
+  #     remote_src: yes
 
   - name: move nexus directory
     copy:
@@ -103,7 +103,7 @@
       group: nexus
       remote_src: yes
     with_fileglob:
-      - "/tmp/nexus-3*"
+      - "/opt/nexus-3*"
 
   - name: copy nexus.rc
     copy:
