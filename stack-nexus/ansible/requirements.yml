@@ -1,4 +1,0 @@
----
-# - src: https://github.com/geerlingguy/ansible-role-java.git
-#   name: geerlingguy.java
-#   scm: git
