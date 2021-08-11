@@ -7,8 +7,8 @@
     - "environments/default_nexus.yml"
     - ["environments/{{ env }}-nexus.yml", "environments/empty.yml"]
 
-  vars:
-    java_version: 8
+  # vars:
+  #   java_version: 8
 
 
   pre_tasks:
