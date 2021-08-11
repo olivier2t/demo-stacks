@@ -11,7 +11,7 @@
     java_version: 8
     java_home: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64"
 
-
+  tasks:
   # Creating nexus user and group
   - name: Add group "nexus"
     group:
