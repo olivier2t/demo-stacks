@@ -12,7 +12,7 @@
     java_home: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64"
 
 
-  pre_tasks:
+  # Creating nexus user and group
   - name: Add group "nexus"
     group:
       name: nexus
@@ -22,6 +22,7 @@
       name: nexus
       groups: nexus
 
+  # Increasing max number of open files on the system for the user nexus
   - name: Set file descriptor limit to 65536  
     sysctl:
       name: fs.file-max
@@ -43,7 +44,8 @@
       limit_item: nofile
       value: 65536
 
-  - name: Install openjdk 8.
+  # Installing JAVA
+  - name: Install openjdk 8
     apt:
       name: "openjdk-{{ java_version }}-jdk"
       state: present
@@ -59,12 +61,7 @@
       dest: /etc/profile.d/java_home.sh
       mode: "a+x"
 
-
-  # roles:
-  # - geerlingguy.java
-
-
-  post_tasks:
+  # Installing Nexus Repository
   - name: create /opt/nexus directory
     file:
       path: "/opt/nexus"
@@ -74,5 +71,30 @@
   - name: Download and unarchive Nexus Repository installer
     unarchive:
       src: "https://download.sonatype.com/nexus/3/latest-unix.tar.gz"
-      dest: "/opt/nexus"
+      dest: "/opt"
       remote_src: yes
+      owner: nexus
+      group: nexus
+
+  - name: rename directory to nexus
+    command: mv nexus-3* nexus
+
+  - name: copy nexus.rc
+      src: nexus.rc
+      dest: /opt/nexus/bin/nexus.rc
+      owner: nexus
+      group: nexus
+
+ # Installing nexus as a service and enable it
+  - name: copy nexus.service
+      src: nexus.service
+      dest: /etc/systemd/system/nexus.service
+      owner: nexus
+      group: nexus
+
+  - name: Enable a timer unit for dnf-automatic
+    systemd:
+      name: nexus.service
+      state: started
+      enabled: yes
+      daemon_reload: yes

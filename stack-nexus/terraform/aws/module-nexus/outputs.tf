@@ -13,12 +13,12 @@ output "vpc_cidr" {
 
 output "private_subnets" {
   description = "The private subnets for the VPC"
-  value       = module.infra_vpc.vpc_id
+  value       = module.infra_vpc.private_subnets
 }
 
 output "public_subnets" {
   description = "The public subnets for the VPC"
-  value       = module.infra_vpc.vpc_id
+  value       = module.infra_vpc.public_subnets
 }
 
 #
