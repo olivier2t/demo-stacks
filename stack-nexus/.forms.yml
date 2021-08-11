@@ -116,7 +116,7 @@ aws:
     Nexus:
       - name: "Instance type"
         description: "Instance type for the Nexus Repository."
-        key: instance_type
+        key: nexus_instance_type
         widget: auto_complete
         type: string
         default: "t3.micro"
@@ -129,7 +129,7 @@ aws:
       - name: "Disk size"
         unit: Go
         description: "Disk size for the Nexus Repository."
-        key: disk_size
+        key: nexus_disk_size
         widget: slider_range
         type: integer
         default: 20
