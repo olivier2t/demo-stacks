@@ -76,8 +76,8 @@
 
   - name: create link to nexus directory
     file:
-      src: /opt/nexus-3*
-      dest: /opt/nexus
+      src: /opt/nexus
+      dest: /opt/nexus-3*
       owner: nexus
       group: nexus
       state: link
