@@ -80,7 +80,7 @@
 
   - name: move nexus directory
     copy:
-      src: {{ item.path }}
+      src: "{{ item.path }}"
       dest: /opt/nexus
       owner: nexus
       group: nexus
