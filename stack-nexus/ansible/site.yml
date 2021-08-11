@@ -75,12 +75,12 @@
   #   become: yes
 
   - name: create link to nexus directory
-  ansible.builtin.file:
-    src: /opt/nexus-3*
-    dest: /opt/nexus
-    owner: nexus
-    group: nexus
-    state: link
+    ansible.builtin.file:
+      src: /opt/nexus-3*
+      dest: /opt/nexus
+      owner: nexus
+      group: nexus
+      state: link
 
   - name: copy nexus.rc
     copy:
