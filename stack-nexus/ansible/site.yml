@@ -72,8 +72,12 @@
 
   - name: rename nexus directory
     shell: ls -d /opt/nexus-3*
-    register: dir_nexus
-  - command: mv {{ dir_nexus.stdout }} /opt/nexus
+    register: src_nexus
+  - stat:
+      path: /opt/nexus
+    register: dest_nexus
+  - command: mv {{ src_nexus.stdout }} /opt/nexus
+    when: dest_nexus.stat.isdir is not defined
 
   - name: copy nexus.rc
     copy:
@@ -90,7 +94,7 @@
       owner: nexus
       group: nexus
 
-  - name: Enable a timer unit for dnf-automatic
+  - name: Configure nexus service
     systemd:
       name: nexus.service
       enabled: yes
