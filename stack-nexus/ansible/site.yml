@@ -70,29 +70,22 @@
       owner: nexus
       group: nexus
 
-  - name: Find /tmp all directories starting with nexus-3
-    find:
-      paths: /tmp
-      recurse: no
-      file_type: directory
-      patterns: 'nexus-3*'
-    register: nexus_dir
+  # - name: Find /tmp all directories starting with nexus-3
+  #   find:
+  #     paths: /tmp
+  #     recurse: no
+  #     file_type: directory
+  #     patterns: 'nexus-3*'
+  #   register: nexus_dir
 
-  - name: "Debug"
-    debug:
-      var: nexus_dir
-  - name: "Debug"
-    debug:
-      var: nexus_dir.files
-
-  - name: move nexus directory
-    copy:
-      src: "{{ item.path }}"
-      dest: /opt/nexus
-      owner: nexus
-      group: nexus
-      remote_src: yes
-    with_items: "{{ nexus_dir.files }}"
+  # - name: move nexus directory
+  #   copy:
+  #     src: "{{ item.path }}"
+  #     dest: /opt/nexus
+  #     owner: nexus
+  #     group: nexus
+  #     remote_src: yes
+  #   with_items: "{{ nexus_dir.files }}"
 
   - name: move sonatype-work directory
     copy:
@@ -101,6 +94,16 @@
       owner: nexus
       group: nexus
       remote_src: yes
+
+  - name: move nexus directory
+    copy:
+      src: "{{ item }}"
+      dest: /opt/nexus
+      owner: nexus
+      group: nexus
+      remote_src: yes
+    with_fileglob:
+      - "/tmp/nexus-3*"
 
   - name: copy nexus.rc
     copy:
