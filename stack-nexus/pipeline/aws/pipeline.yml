@@ -242,9 +242,9 @@ jobs:
           ANSIBLE_PLAYBOOK_PATH: ansible-playbook
           ANSIBLE_PLAYBOOK_NAME: site.yml
           EXTRA_ANSIBLE_VARS:
-            env: (env)
-            project: (project)
-            customer: (customer)
+            env: ((env))
+            project: ((project))
+            customer: ((customer))
 
   - name: terraform-destroy
     serial: true
