@@ -65,7 +65,14 @@
 
 
   post_tasks:
+  - name: create /opt/nexus directory
+    file:
+      path: "/opt/nexus"
+      state: directory
+      mode: 0755
+
   - name: Download and unarchive Nexus Repository installer
     unarchive:
       src: "https://download.sonatype.com/nexus/3/latest-unix.tar.gz"
-      dest: /tmp
+      dest: "/opt/nexus"
+      remote_src: yes
