@@ -95,15 +95,18 @@
   #     group: nexus
   #     remote_src: yes
 
-  - name: move nexus directory
-    copy:
-      src: "{{ item }}"
-      dest: /opt/nexus
-      owner: nexus
-      group: nexus
-      remote_src: yes
-    with_fileglob:
-      - "/opt/nexus-3*"
+  # - name: move nexus directory
+  #   copy:
+  #     src: "{{ item }}"
+  #     dest: /opt/nexus
+  #     owner: nexus
+  #     group: nexus
+  #     remote_src: yes
+  #   with_fileglob:
+  #     - "/opt/nexus-3*"
+
+  - name: Run command if /opt/nexus does not exist
+    ansible.builtin.command: sudo mv /opt/nexus-3* /opt/nexus
 
   - name: copy nexus.rc
     copy:
