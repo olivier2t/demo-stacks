@@ -288,40 +288,40 @@ jobs:
             project: ((project))
             customer: ((customer))
 
-      on_success:
-        do:
-          - put: slack-alert
-            params:
-              env_file: tfstate/env
-              attachments:
-                - author_link: 'https://www.cycloid.io/'
-                  author_name: cycloid.io
-                  color: good
-                  fallback: 'Nexus Repository successfully deployed'
-                  fields:
-                    - short: true
-                      title: Project
-                      value: ((project))
-                    - short: true
-                      title: Environment
-                      value: ((env))
-                  pretext: Nexus Repository was deployed successfully.
-                  title: '[SUCCESS]'
-                  title_link: 'https://console.cycloid.io/projects/((customer))/((project))/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_ID'
-                  text: |
-                    Nexus Repository url :
-                    http://$nexus_ip:$nexus_port
-          - put: cycloid-events
-            params:
-              vars_file: tfstate/env.yml
-              severity: info
-              message: |
-                       The project ((project)) on ((env)) environment has been deployed successfully.
-                       </br>
-                       <ul>
-                       <li><em><a target="_blank" href="http://$nexus_ip:$nexus_port">Access to Nexus Repository</a></em></li>
-                       </ul>
-              title: The project ((project)) on ((env)) environment deployed successfully
+        on_success:
+          do:
+            - put: slack-alert
+              params:
+                env_file: tfstate/env
+                attachments:
+                  - author_link: 'https://www.cycloid.io/'
+                    author_name: cycloid.io
+                    color: good
+                    fallback: 'Nexus Repository successfully deployed'
+                    fields:
+                      - short: true
+                        title: Project
+                        value: ((project))
+                      - short: true
+                        title: Environment
+                        value: ((env))
+                    pretext: Nexus Repository was deployed successfully.
+                    title: '[SUCCESS]'
+                    title_link: 'https://console.cycloid.io/projects/((customer))/((project))/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_ID'
+                    text: |
+                      Nexus Repository url :
+                      http://$nexus_ip:$nexus_port
+            - put: cycloid-events
+              params:
+                vars_file: tfstate/env.yml
+                severity: info
+                message: |
+                        The project ((project)) on ((env)) environment has been deployed successfully.
+                        </br>
+                        <ul>
+                        <li><em><a target="_blank" href="http://$nexus_ip:$nexus_port">Access to Nexus Repository</a></em></li>
+                        </ul>
+                title: The project ((project)) on ((env)) environment deployed successfully
 
 
   - name: terraform-destroy
