@@ -180,7 +180,7 @@
 
   - include: call_script.yml
     vars:
-      script_name: update_admin_password
+      script_name: change-password
       args:
         new_password: "{{ nexus_admin_password }}"
     when: admin_password_file.stat.exists
