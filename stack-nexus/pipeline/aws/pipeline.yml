@@ -39,7 +39,7 @@ resource_types:
 
 resources:
 # The Cycloid event resource to log events
-- name: cycloid-events
+- name: cycloid-event
   type: cycloid-events
   source:
     api_key: ((cycloid_api_key))
@@ -267,6 +267,8 @@ jobs:
               - |
                 python -c "import json; print('\n'.join([ '%s: %s' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env.yml
                 python -c "import json; print('\n'.join([ '%s=%s' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env
+                cat tfstate-env/env
+                cat tfstate-env/env.yml
                 source tfstate-env/env
                 export SSH_JUMP_URL="$bastion_user@$bastion_ip"
                 /usr/bin/ansible-runner
@@ -317,7 +319,7 @@ jobs:
                     text: |
                       Nexus Repository url :
                       http://$nexus_ip:((nexus_port))
-            - put: cycloid-events
+            - put: cycloid-event
               params:
                 vars_file: tfstate-env/env.yml
                 severity: info
