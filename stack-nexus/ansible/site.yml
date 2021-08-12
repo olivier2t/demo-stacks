@@ -139,7 +139,7 @@
       owner: nexus
       group: nexus
       recurse: yes
-      
+
   # Installing nexus as a service and enable it
   - name: copy systemd service configuration
     template:
@@ -173,24 +173,29 @@
   #     state: restarted
 
 
-  # - name: First-time install admin password
-  #   set_fact:
-  #     current_nexus_admin_password: 'admin123'
-  #   when: nexus_data_dir_contents.stdout == ""
+  - name: Check if first-time install admin password is present
+    stat:
+      path: "{{ nexus_data_dir }}/nexus3/admin.password"
+    register: admin_password_file
 
-  # - name: Subsequent re-provision admin password
-  #   set_fact:
-  #     current_nexus_admin_password: "{{ nexus_admin_password }}"
-  #   when: nexus_data_dir_contents.stdout != ""
-  #   no_log: true
+  - name: fetch first-time install admin password
+    slurp:
+      src: "{{ nexus_data_dir }}/nexus3/admin.password"
+    register: admin_password_slurp
+    when: admin_password_file.stat.exists
 
-  # - include: call_script.yml
-  #   vars:
-  #     script_name: update_admin_password
-  #     args:
-  #       new_password: "{{ nexus_admin_password }}"
+  - name: Decode first-time install admin password and store it
+    set_fact:
+      current_nexus_admin_password: "{{ admin_password_slurp.content | b64decode }}"
+    when: admin_password_file.stat.exists
 
-  # - name: Admin password changed
-  #   set_fact:
-  #     current_nexus_admin_password: "{{ nexus_admin_password }}"
-  #   no_log: true
+  - include: call_script.yml
+    vars:
+      script_name: update_admin_password
+      args:
+        new_password: "{{ nexus_admin_password }}"
+    when: admin_password_file.stat.exists
+
+  - name: Admin password changed and Subsequent re-provision admin password
+    set_fact:
+      current_nexus_admin_password: "{{ nexus_admin_password }}"
