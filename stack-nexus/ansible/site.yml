@@ -161,18 +161,7 @@
       port: "{{ nexus_port }}"
       delay: 5
 
-  # - name: Configure nexus service
-  #   systemd:
-  #     name: nexus.service
-  #     enabled: yes
-  #     daemon_reload: yes
-
-  # - name: Restart service nexus
-  #   service:
-  #     name: nexus.service
-  #     state: restarted
-
-
+  # Changing admin password for first-time install
   - name: Check if first-time install admin password is present
     stat:
       path: "{{ nexus_data_dir }}/nexus3/admin.password"
