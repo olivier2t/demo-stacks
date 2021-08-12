@@ -292,6 +292,7 @@ jobs:
             env: ((env))
             project: ((project))
             customer: ((customer))
+            nexus_port: ((nexus_port))
             nexus_admin_password: ((nexus_admin_password))
 
         on_success:
