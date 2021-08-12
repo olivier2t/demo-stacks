@@ -260,14 +260,15 @@ jobs:
               repository: cycloid/cycloid-toolkit
               tag: ((ansible_version))
           run:
+            # Extract tfstate metadata into shell and yaml scripts and store them into a new tfstate-env resource
             path: /bin/bash
             args:
               - '-ec'
               - |
+                python -c "import json; print('\n'.join([ '%s: %s' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env.yml
                 python -c "import json; print('\n'.join([ '%s=%s' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env
                 source tfstate-env/env
-                python -c "import json; print('\n'.join([ '%s: %s' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env.yml
-                export SSH_JUMP_URL="$(cat tfstate/metadata | jq -r .bastion_user)@$(cat tfstate/metadata | jq -r .bastion_ip)"
+                export SSH_JUMP_URL="$bastion_user@$bastion_ip"
                 /usr/bin/ansible-runner
           caches:
             - path: ansible-playbook/roles
