@@ -125,7 +125,7 @@
     lineinfile:
       dest: "{{ nexus_installation_dir }}/nexus-latest/etc/nexus-default.properties"
       regexp: "^application-port=.*"
-      line: "application-port={{ nexus_default_port }}"
+      line: "application-port={{ nexus_port }}"
 
   # - name: Bind nexus service to 127.0.0.1 only
   #   lineinfile:
@@ -151,7 +151,7 @@
   - name: Waiting for nexus to be ready...
     wait_for:
       host: "{{ nexus_ip }}"
-      port: "{{ nexus_default_port }}"
+      port: "{{ nexus_port }}"
       delay: 5
 
   # - name: Configure nexus service

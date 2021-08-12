@@ -3,21 +3,30 @@
 version: '2'
 name: 'Nexus Repository OSS'
 canonical: 'stack-nexus'
-status: 'private'
-keywords:
-  - 'nexus'
-  - 'repository'
-description: |
-  This stack will deploy a Nexus Repository (open source version) in an existing VPC.
+description: This stack deploys a Nexus Repository (open source version).
 author: 'Olivier de Turckheim'
 image: 'https://raw.githubusercontent.com/olivier2t/stack-nexus/main/icon.png'
+status: 'private'
+keywords:
+- nexus
+- repository
+- artefact
+- demo
+- aws
+- gcp
+- azure
+- provider:aws
+- provider:azure
+- provider:gcp
+technologies:
+- technology: nexus
+  version: "3.33"
 
 config:
   aws:
-    name: 'Deploy on AWS'
-    description: 'Deploy on AWS'
-    cloud_provider: 'aws'
-
+    name: 'AWS'
+    description: 'Deploys a Nexus Repository in a single AWS instance'
+    cloud_provider: aws
     # Pipeline and variable configuration for the AWS CD pipeline use case
     pipeline:
       pipeline:
@@ -25,15 +34,35 @@ config:
       variables:
         path: 'pipeline/aws/variables.sample.yml'
         destination: '($ project $)/pipeline/aws/($ environment $)/variables.yml'
-
     # Configuration of ansible for provisionning
     ansible:
       nexus:
         path: 'ansible/environments/nexus.yml.sample'
         destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
-
     # Configuration of terraform
     terraform:
       main:
         path: 'terraform/aws/main.tf'
         destination: '($ project $)/terraform/aws/($ environment $)/main.tf'
+
+  azure:
+    name: 'Azure'
+    description: 'Deploys a Nexus Repository in a single Azure instance'
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the AWS CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/azure/pipeline.yml'
+      variables:
+        path: 'pipeline/azure/variables.sample.yml'
+        destination: '($ project $)/pipeline/azure/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/azure/main.tf'
+        destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
