@@ -30,3 +30,4 @@ variable "bastion_instance_type" {}
 #
 variable "nexus_instance_type" {}
 variable "nexus_disk_size" {}
+variable "nexus_port" {}

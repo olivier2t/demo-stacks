@@ -11,14 +11,14 @@ output "vpc_cidr" {
   value       = module.nexus.vpc_cidr
 }
 
-output "private_subnets" {
-  description = "The private subnets for the VPC"
-  value       = module.nexus.private_subnets
+output "private_subnet" {
+  description = "The private subnet for the VPC"
+  value       = module.nexus.private_subnets[0]
 }
 
-output "public_subnets" {
-  description = "The public subnets for the VPC"
-  value       = module.nexus.public_subnets
+output "public_subnet" {
+  description = "The public subnet for the VPC"
+  value       = module.nexus.public_subnets[0]
 }
 
 #
@@ -50,6 +50,11 @@ output "bastion_sg_allow" {
 output "nexus_ip" {
   description = "The IP address the Nexus Repository EC2 server"
   value       = module.nexus.nexus_ip
+}
+
+output "nexus_port" {
+  description = "Port where Nexus Repository service is exposed"
+  value       = module.nexus.nexus_port
 }
 
 output "nexus_user" {

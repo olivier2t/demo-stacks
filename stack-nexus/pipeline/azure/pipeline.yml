@@ -89,6 +89,7 @@ resources:
         bastion_instance_type: ((bastion_instance_type))
         nexus_instance_type: ((nexus_instance_type))
         nexus_disk_size: ((nexus_disk_size))
+        nexus_port: ((nexus_port))
         keypair_public: ((keypair_public))
         env: ((env))
         project: ((project))

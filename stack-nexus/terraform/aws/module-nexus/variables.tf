@@ -61,6 +61,11 @@ variable "nexus_disk_size" {
   default = 20
 }
 
+variable "nexus_port" {
+  description = "Port where Nexus Repository service is exposed"
+  default = 8081
+}
+
 # Tags
 variable "extra_tags" {
   default = {}

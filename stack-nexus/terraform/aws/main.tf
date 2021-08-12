@@ -54,4 +54,8 @@ module "nexus" {
   #. nexus_disk_size: 20
   #+ Disk size for the Nexus Repository (Go)
   nexus_disk_size = var.nexus_disk_size
+
+  #. nexus_port: 8081
+  #+ Port where Nexus Repository service is exposed
+  nexus_port = var.nexus_port
 }

@@ -47,6 +47,11 @@ output "nexus_ip" {
   value       = aws_eip.nexus.public_ip
 }
 
+output "nexus_port" {
+  description = "Port where Nexus Repository service is exposed"
+  value = var.nexus_port
+}
+
 output "nexus_sg" {
   description = "The Nexus Repository security group ID."
   value       = aws_security_group.nexus.id
