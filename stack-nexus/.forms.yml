@@ -135,6 +135,18 @@ aws:
         values:
             - 10
             - 250
+      - name: "Port"
+        description: "Port where Nexus Repository service is exposed."
+        key: nexus_port
+        widget: number
+        type: integer
+        default: 8081
+      - name: "Admin password"
+        description: "Initial admin password for Nexus Repository first installation."
+        key: nexus_admin_password
+        widget: simple_text
+        type: string
+        default: "changeme"
 
 
 azure:
