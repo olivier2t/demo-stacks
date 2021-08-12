@@ -129,6 +129,14 @@ project: ($ project $)
 #+ Name of the Cycloid Organization, used as customer variable name.
 customer: ($ organization_canonical $)
 
+#. cycloid_api_key (required): ((custom_api-key-admin.key))
+#+ API key to grant admin acess to Cycloid API.
+cycloid_api_key: ((custom_api-key-admin.key))
+
+#. slack_hook (required): ((raw_slack-hooks.demo_channel))
+#+ URL to send notifications to cycloid-demo channel.
+slack_hook: ((raw_slack-hooks.demo_channel))
+
 #. terraform_version (required): '0.15.2'
 #+ terraform version used to execute your code.
 terraform_version: '0.15.2'
