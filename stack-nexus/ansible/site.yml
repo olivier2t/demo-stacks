@@ -133,6 +133,13 @@
   #     regexp: "^application-host=.*"
   #     line: "application-host=127.0.0.1"
 
+  - name: ensure all subdirectories in /opt are owned by nexus user
+    file:
+      dest: /opt
+      owner: nexus
+      group: nexus
+      recurse: yes
+      
   # Installing nexus as a service and enable it
   - name: copy systemd service configuration
     template:
