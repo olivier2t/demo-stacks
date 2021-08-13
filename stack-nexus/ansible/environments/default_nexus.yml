@@ -7,8 +7,8 @@ nexus_os_max_filedescriptors: 65536
 nexus_installation_dir: '/opt'
 nexus_data_dir: '/opt/sonatype-work'
 nexus_timezone: 'Europe/Paris' # java timezone
-nexus_admin_password: "{{ nexus_admin_password | default('changeme') }}"
-nexus_port: "{{ nexus_port | default('8081') }}"
+nexus_admin_password: "{{ lookup('env','nexus_admin_password') | default('changeme')}}"
+nexus_port: "{{ lookup('env','nexus_port') | default('8081')}}"
 
 java_version: 8
 java_home: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64"
