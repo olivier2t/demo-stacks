@@ -266,7 +266,7 @@ jobs:
             args:
               - '-ec'
               - |
-                python -c "import json; print('\n'.join([ '%s: %s' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env.yml
+                python -c "import json; print('\n'.join([ '%s: \"%s\"' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env.yml
                 python -c "import json; print('\n'.join([ '%s=%s' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env
                 source tfstate-env/env
                 echo "Nexus Repository will be accessible on http://$nexus_ip:$nexus_port"
