@@ -148,7 +148,7 @@ aws:
       - name: "Port"
         description: "Port where Nexus Repository service is exposed."
         key: nexus_port
-        widget: number
+        widget: simple_text
         type: string
         default: 8081
         required: true
