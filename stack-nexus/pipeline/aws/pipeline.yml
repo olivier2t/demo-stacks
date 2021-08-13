@@ -323,7 +323,7 @@ jobs:
                       http://$nexus_ip:$nexus_port
             - put: cycloid-event
               params:
-                vars_file: tfstate-env/env.yml
+                vars_file: terraform-env/env.yml
                 severity: info
                 message: |
                         The project ((project)) on ((env)) environment has been deployed successfully.
