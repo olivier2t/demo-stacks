@@ -282,7 +282,7 @@ jobs:
             path: "terraform"
           outputs:
           - name: tfstate-env
-          - name: terraform-env
+            path: terraform-env
 
         params:
           #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
