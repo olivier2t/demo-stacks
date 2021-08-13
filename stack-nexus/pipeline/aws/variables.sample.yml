@@ -112,9 +112,9 @@ nexus_instance_type: t3a.medium
 #+ Disk size for the Nexus Repository (Go).
 nexus_disk_size: 20
 
-#. nexus_port (required): 8081
+#. nexus_port (required): 8088
 #+ Port where Nexus Repository service is exposed.
-nexus_port: 8081
+nexus_port: 8088
 
 #. nexus_admin_password (required): changeme
 #+ Initial admin password in case of first installation.
