@@ -128,7 +128,7 @@ resources:
       bastion_instance_type: ((bastion_instance_type))
       nexus_instance_type: ((nexus_instance_type))
       nexus_disk_size: ((nexus_disk_size))
-      nexus_port: ((nexus_port))
+      nexus_port: ((nexus_default_port))
       keypair_public: ((keypair_public))
       env: ((env))
       project: ((project))
@@ -295,7 +295,7 @@ jobs:
             project: ((project))
             customer: ((customer))
             nexus_port: ((nexus_port))
-            nexus_admin_password: ((nexus_admin_password))
+            nexus_admin_password: ((nexus_default_admin_password))
 
         on_success:
           do:
