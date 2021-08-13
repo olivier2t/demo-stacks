@@ -1,0 +1,29 @@
+#
+# Terraform
+#
+
+# Azure access to use to run terraform.
+
+#. azure_subscription_id (required): ((azure_admin.subscription_id))
+#+ Azure subscription ID to use for Terraform.
+azure_subscription_id: ((azure_admin.subscription_id))
+
+#. azure_tenant_id (required): ((azure_admin.tenant_id))
+#+ Azure tenant ID to use for Terraform.
+azure_tenant_id: ((azure_admin.tenant_id))
+
+#. azure_client_id (required): ((azure_admin.client_id))
+#+ Azure client ID to use for Terraform.
+azure_client_id: ((azure_admin.client_id))
+
+#. azure_client_secret (required): ((azure_admin.client_secret))
+#+ Azure client secret to use for Terraform.
+azure_client_secret: ((azure_admin.client_secret))
+
+#. azure_env (required): public
+#+ Azure environment to use for Terraform. Can be either `public`, `usgovernment`, `german` or `china`.
+azure_env: "public"
+
+#. azure_location (required): West Europe
+#+ Azure location to use for terraform. 
+azure_location: "West Europe"

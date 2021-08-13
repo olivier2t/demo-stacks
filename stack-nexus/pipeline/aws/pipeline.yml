@@ -261,14 +261,14 @@ jobs:
               repository: cycloid/cycloid-toolkit
               tag: ((ansible_version))
           run:
-            # Extract tfstate metadata into shell and yaml scripts and store them into a new tfstate-env resource
+            # Extract terraform metadata into shell and yaml scripts and store them into a new terraform-env resource
             path: /bin/bash
             args:
               - '-ec'
               - |
-                python -c "import json; print('\n'.join([ '%s: \"%s\"' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env.yml
-                python -c "import json; print('\n'.join([ '%s=%s' % (k,v) for k, v in json.load(open('tfstate/metadata', 'r')).items()]))" | tee tfstate-env/env
-                source tfstate-env/env
+                python -c "import json; print('\n'.join([ '%s: \"%s\"' % (k,v) for k, v in json.load(open('terraform/metadata', 'r')).items()]))" | tee terraform-env/env.yml
+                python -c "import json; print('\n'.join([ '%s=%s' % (k,v) for k, v in json.load(open('terraform/metadata', 'r')).items()]))" | tee terraform-env/env
+                source terraform-env/env
                 echo "Nexus Repository will be accessible on http://$nexus_ip:$nexus_port"
                 export SSH_JUMP_URL="$bastion_user@$bastion_ip"
                 echo "Ansible connects via bastion using $SSH_JUMP_URL"
@@ -282,6 +282,7 @@ jobs:
             path: "terraform"
           outputs:
           - name: tfstate-env
+          - name: terraform-env
 
         params:
           #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
@@ -295,12 +296,13 @@ jobs:
             env: ((env))
             project: ((project))
             customer: ((customer))
+            nexus_admin_password: ((nexus_default_admin_password))
 
         on_success:
           do:
             - put: slack-alert
               params:
-                env_file: tfstate-env/env
+                env_file: terraform-env/env
                 attachments:
                   - author_link: 'https://www.cycloid.io/'
                     author_name: cycloid.io
