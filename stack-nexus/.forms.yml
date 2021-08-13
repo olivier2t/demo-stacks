@@ -150,7 +150,7 @@ aws:
         key: nexus_port
         widget: simple_text
         type: string
-        default: 8081
+        default: "8081"
         required: true
       - name: "Admin password"
         description: "Initial admin password for Nexus Repository first installation."
