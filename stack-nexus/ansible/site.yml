@@ -7,9 +7,6 @@
   - "environments/default_nexus.yml"
   - ["environments/{{ env }}-nexus.yml", "environments/empty.yml"]
 
-  vars:
-    nexus_admin_password: "{{ nexus_admin_password }}"
-    nexus_port: "{{ nexus_port }}"
 
   tasks:
   # Creating nexus user and group
