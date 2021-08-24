@@ -1,12 +1,4 @@
 #
-# Keypair
-#
-output "keypair_public" {
-  description = "The public SSH key, for SSH access to newly-created instances"
-  value       = module.nexus.keypair_public
-}
-
-#
 # VPC outputs
 #
 output "vpc_id" {
