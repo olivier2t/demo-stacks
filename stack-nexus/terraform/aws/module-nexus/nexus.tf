@@ -29,15 +29,6 @@ resource "aws_security_group" "nexus" {
   })
 }
 
-resource "aws_eip" "nexus" {
-  instance = aws_instance.nexus.id
-  vpc      = true
-
-  tags = merge(local.merged_tags, {
-    Name       = "${var.customer}-${var.project}-${var.env}-nexus"
-  })
-}
-
 resource "aws_instance" "nexus" {
   ami           = data.aws_ami.debian.id
   instance_type = var.nexus_instance_type
@@ -47,6 +38,7 @@ resource "aws_instance" "nexus" {
 
   subnet_id               = element(module.infra_vpc.public_subnets, 0)
   disable_api_termination = false
+  associate_public_ip_address = true
 
   root_block_device {
     volume_size           = var.nexus_disk_size

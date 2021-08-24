@@ -48,15 +48,6 @@ resource "aws_security_group" "allow_bastion_infra" {
   })
 }
 
-resource "aws_eip" "bastion" {
-  instance = aws_instance.bastion.id
-  vpc = true
-
-  tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.project}-${var.env}-bastion"
-  })
-}
-
 resource "aws_instance" "bastion" {
   ami = data.aws_ami.debian.id
   instance_type = var.bastion_instance_type
@@ -66,6 +57,7 @@ resource "aws_instance" "bastion" {
 
   subnet_id = element(module.infra_vpc.public_subnets, 0)
   disable_api_termination = false
+  associate_public_ip_address = true
 
   tags = merge(local.merged_tags, {
     Name = "${var.customer}-${var.project}-${var.env}-bastion"

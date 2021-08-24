@@ -34,7 +34,7 @@ output "public_subnets" {
 #
 output "bastion_ip" {
   description = "The EIP attached to the bastion EC2 server"
-  value       = aws_eip.bastion.public_ip
+  value       = aws_instance.bastion.public_ip
 }
 
 output "bastion_allowed_networks" {
@@ -57,7 +57,7 @@ output "bastion_sg_allow" {
 #
 output "nexus_ip" {
   description = "The IP address the Nexus Repository EC2 server"
-  value       = aws_eip.nexus.public_ip
+  value       = aws_instance.nexus.public_ip
 }
 
 output "nexus_port" {
