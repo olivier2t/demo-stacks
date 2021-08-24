@@ -269,7 +269,7 @@ jobs:
               - |
                 python -c "import json; print('\n'.join([ '%s: \"%s\"' % (k,v) for k, v in json.load(open('terraform/metadata', 'r')).items()]))" | tee terraform-env/env.yml
                 python -c "import json; print('\n'.join([ '%s=%s' % (k,v) for k, v in json.load(open('terraform/metadata', 'r')).items()]))" | tee terraform-env/env
-                source terraform-env/env
+                source <(grep 'bastion\|nexus' terraform-env/env)
                 export SSH_JUMP_URL="$bastion_user@$bastion_ip"
                 echo "Ansible connects via bastion using $SSH_JUMP_URL"
                 echo "Nexus Repository will be accessible at http://$nexus_ip:$nexus_port"
