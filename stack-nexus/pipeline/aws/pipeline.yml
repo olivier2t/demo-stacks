@@ -303,7 +303,7 @@ jobs:
           do:
             - put: slack-alert
               params:
-                env_file: terraform-env/env
+                env_file: tfstate-env/env
                 attachments:
                   - author_link: 'https://www.cycloid.io/'
                     author_name: cycloid.io
