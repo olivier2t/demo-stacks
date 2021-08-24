@@ -76,15 +76,15 @@ stack_ansible_path: stack-nexus/ansible
 
 #. cidr (required): '10.0.0.0/16'
 #+ The CIDR of the VPC.
-cidr: '10.0.0.0/16'
+# cidr: '10.0.0.0/16'
 
 #. private_subnets (required): ['10.0.1.0/24']
 #+ The private subnets for the VPC.
-private_subnets: ['10.0.1.0/24']
+# private_subnets: ['10.0.1.0/24']
 
 #. public_subnets (required): ['10.0.0.0/24']
 #+ The public subnets for the VPC.
-public_subnets: ['10.0.0.0/24']
+# public_subnets: ['10.0.0.0/24']
 
 
 #
@@ -93,11 +93,11 @@ public_subnets: ['10.0.0.0/24']
 
 #. bastion_instance_type (required): t3.small
 #+ Instance type for the bastion.
-bastion_instance_type: t3a.small
+# bastion_instance_type: t3a.small
 
 #. bastion_allowed_networks (required): ['0.0.0.0/0']
 #+ Networks allowed to connect to the bastion using SSH.
-bastion_allowed_networks: ['0.0.0.0/0']
+# bastion_allowed_networks: ['0.0.0.0/0']
 
 
 #
@@ -106,19 +106,19 @@ bastion_allowed_networks: ['0.0.0.0/0']
 
 #. nexus_instance_type (required): t3a.medium
 #+ Instance type for the Nexus Repository.
-nexus_instance_type: t3a.medium
+# nexus_instance_type: t3a.medium
 
-#. nexus_disk_size (required): 20
+#. nexus_disk_size (required): "20"
 #+ Disk size for the Nexus Repository (Go).
-nexus_disk_size: 20
+# nexus_disk_size: "20"
 
-#. nexus_default_port (required): 8088
+#. nexus_port (required): "8088"
 #+ Port where Nexus Repository service is exposed.
-nexus_default_port: 8088
+# nexus_port: "8088"
 
-#. nexus_default_admin_password (required): changeme
+#. nexus_admin_password (required): changeme
 #+ Initial admin password in case of first installation.
-nexus_default_admin_password: changeme
+# nexus_admin_password: changeme
 
 
 #

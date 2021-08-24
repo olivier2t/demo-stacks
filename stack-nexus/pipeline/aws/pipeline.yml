@@ -121,14 +121,15 @@ resources:
       aws_access_key: ((aws_access_key))
       aws_secret_key: ((aws_secret_key))
       aws_region: ((aws_region))
-      cidr: ((cidr))
-      private_subnets: ((private_subnets))
-      public_subnets: ((public_subnets))
-      bastion_allowed_networks: ((bastion_allowed_networks))
-      bastion_instance_type: ((bastion_instance_type))
-      nexus_instance_type: ((nexus_instance_type))
-      nexus_disk_size: ((nexus_disk_size))
-      nexus_port: ((nexus_default_port))
+      # cidr: ((cidr))
+      # private_subnets: ((private_subnets))
+      # public_subnets: ((public_subnets))
+      # bastion_allowed_networks: ((bastion_allowed_networks))
+      # bastion_instance_type: ((bastion_instance_type))
+      # nexus_instance_type: ((nexus_instance_type))
+      # nexus_disk_size: ((nexus_disk_size))
+      # nexus_port: ((nexus_default_port))
+      keypair_private: ((keypair_private))
       keypair_public: ((keypair_public))
       env: ((env))
       project: ((project))
@@ -323,7 +324,7 @@ jobs:
                       http://$nexus_ip:$nexus_port
             - put: cycloid-event
               params:
-                vars_file: terraform-env/env.yml
+                vars_file: tfstate-env/env.yml
                 severity: info
                 message: |
                         The project ((project)) on ((env)) environment has been deployed successfully.

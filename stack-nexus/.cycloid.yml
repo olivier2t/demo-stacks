@@ -39,10 +39,10 @@ config:
       nexus:
         path: 'ansible/environments/nexus.yml.sample'
         destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
-    # Configuration of terraform
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
-        path: 'terraform/aws/main.tf'
+        path: 'terraform/aws/main.tf.sample'
         destination: '($ project $)/terraform/aws/($ environment $)/main.tf'
 
   azure:
@@ -64,7 +64,7 @@ config:
     # Configuration of terraform
     terraform:
       main:
-        path: 'terraform/azure/main.tf'
+        path: 'terraform/azure/main.tf.sample'
         destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
 
   gcp:
@@ -86,7 +86,7 @@ config:
     # Configuration of terraform
     terraform:
       main:
-        path: 'terraform/gcp/main.tf'
+        path: 'terraform/gcp/main.tf.sample'
         destination: '($ project $)/terraform/gcp/($ environment $)/main.tf'
 
   vmware:
@@ -108,7 +108,7 @@ config:
     # Configuration of terraform
     terraform:
       main:
-        path: 'terraform/azure/main.tf'
+        path: 'terraform/azure/main.tf.sample'
         destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
 
   fe:
@@ -130,5 +130,5 @@ config:
     # Configuration of terraform
     terraform:
       main:
-        path: 'terraform/azure/main.tf'
+        path: 'terraform/azure/main.tf.sample'
         destination: '($ project $)/terraform/azure/($ environment $)/main.tf'

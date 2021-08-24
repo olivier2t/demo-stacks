@@ -147,14 +147,14 @@ aws:
         required: true
       - name: "Port"
         description: "Port where Nexus Repository service is exposed."
-        key: nexus_default_port
+        key: nexus_port
         widget: simple_text
         type: string
         default: "8081"
         required: true
       - name: "Admin password"
         description: "Initial admin password for Nexus Repository first installation."
-        key: nexus_default_admin_password
+        key: nexus_admin_password
         widget: simple_text
         type: string
         default: "changeme"

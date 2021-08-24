@@ -65,11 +65,6 @@ variable "nexus_port" {
   default = "8081"
 }
 
-variable "nexus_admin_password" {
-  description = "Initial admin password in case of first installation."
-  default = "changeme"
-}
-
 # Tags
 variable "extra_tags" {
   default = {}

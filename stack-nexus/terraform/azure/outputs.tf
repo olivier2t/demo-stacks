@@ -62,25 +62,7 @@ output "nexus_user" {
   value       = "admin"
 }
 
-output "nexus_admin_password" {
-  description = "Initial admin password in case of first installation."
-  value       = module.nexus.nexus_admin_password
-}
-
 output "nexus_sg" {
   description = "The Nexus Repository security group ID."
   value       = module.nexus.nexus_sg
-}
-
-#
-# Keypair
-#
-output "keypair_private" {
-  description = "The private SSH key, for SSH access to newly-created instances"
-  value       = var.keypair_private
-}
-
-output "keypair_public" {
-  description = "The public SSH key, for SSH access to newly-created instances"
-  value       = var.keypair_public
 }

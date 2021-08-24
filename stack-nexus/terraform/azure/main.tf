@@ -8,12 +8,20 @@ module "nexus" {
   #####################################
 
   #. extra_tags (optional): {}
-  #+ Dict of extra tags to add on aws resources. format { "foo" = "bar" }.
-  extra_tags = { "demo" = true }
+  #+ Dict of extra tags to add on resources. format { "foo" = "bar" }.
+  extra_tags:
+  - demo: true
+  - monitoring_discovery: false
+
+  # . azure_location: ""
+  # + The public SSH key, for SSH access to newly-created instances
+  keypair_public = var.keypair_public
 
   # . keypair_public: ""
   # + The public SSH key, for SSH access to newly-created instances
   keypair_public = var.keypair_public
+
+variable "azure_location" {}
 
   #
   # VPC
@@ -54,4 +62,8 @@ module "nexus" {
   #. nexus_disk_size: 20
   #+ Disk size for the Nexus Repository (Go)
   nexus_disk_size = var.nexus_disk_size
+
+  #. nexus_port: 8081
+  #+ Port where Nexus Repository service is exposed
+  nexus_port = var.nexus_port
 }
