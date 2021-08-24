@@ -1,5 +1,5 @@
 resource "aws_security_group" "nexus" {
-  name        = "nexus"
+  name        = "${var.customer}-${var.project}-${var.env}-nexus"
   description = "Allow accessing the Nexus Repository service from the internet."
   vpc_id      = module.infra_vpc.vpc_id
 
@@ -25,7 +25,7 @@ resource "aws_security_group" "nexus" {
   }
 
   tags = merge(local.merged_tags, {
-    Name       = "${var.customer}-${var.env}-nexus"
+    Name       = "${var.customer}-${var.project}-${var.env}-nexus"
   })
 }
 
@@ -34,7 +34,7 @@ resource "aws_eip" "nexus" {
   vpc      = true
 
   tags = merge(local.merged_tags, {
-    Name       = "${var.customer}-${var.env}-nexus"
+    Name       = "${var.customer}-${var.project}-${var.env}-nexus"
   })
 }
 
@@ -54,7 +54,7 @@ resource "aws_instance" "nexus" {
   }
 
   tags = merge(local.merged_tags, {
-    Name       = "${var.customer}-${var.env}-nexus"
+    Name       = "${var.customer}-${var.project}-${var.env}-nexus"
     role       = "nexus"
   })
 

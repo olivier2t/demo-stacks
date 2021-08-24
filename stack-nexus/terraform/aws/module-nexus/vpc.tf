@@ -2,7 +2,7 @@ module "infra_vpc" {
   source = "terraform-aws-modules/vpc/aws"
   version = "~> v3.0.0"
 
-  name = "${var.customer}-${var.env}-vpc"
+  name = "${var.customer}-${var.project}-${var.env}-vpc"
   cidr = var.cidr
   azs = data.aws_availability_zones.available.names
 

@@ -1,5 +1,5 @@
 resource "aws_security_group" "bastion" {
-  name = "${var.customer}-${var.env}-bastion"
+  name = "${var.customer}-${var.project}-${var.env}-bastion"
   description = "Allow SSH traffic from the internet to bastion"
   vpc_id = module.infra_vpc.vpc_id
 
@@ -18,13 +18,13 @@ resource "aws_security_group" "bastion" {
   }
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.env}-bastion"
+    Name = "${var.customer}-${var.project}-${var.env}-bastion"
   })
 }
 
 
 resource "aws_security_group" "allow_bastion_infra" {
-  name = "${var.customer}-${var.env}-allow-bastion-infra"
+  name = "${var.customer}-${var.project}-${var.env}-allow-bastion-infra"
   description = "Allow SSH traffic from the bastion to the infra"
   vpc_id = module.infra_vpc.vpc_id
 
@@ -44,7 +44,7 @@ resource "aws_security_group" "allow_bastion_infra" {
   }
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.env}-allow-bastion-infra"
+    Name = "${var.customer}-${var.project}-${var.env}-allow-bastion-infra"
   })
 }
 
@@ -53,7 +53,7 @@ resource "aws_eip" "bastion" {
   vpc = true
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.env}-bastion"
+    Name = "${var.customer}-${var.project}-${var.env}-bastion"
   })
 }
 
@@ -68,7 +68,7 @@ resource "aws_instance" "bastion" {
   disable_api_termination = false
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.env}-bastion"
+    Name = "${var.customer}-${var.project}-${var.env}-bastion"
     role = "bastion"
   })
 
