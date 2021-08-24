@@ -1,11 +1,6 @@
 #
 # Keypair
 #
-output "keypair_private" {
-  description = "The private SSH key, for SSH access to newly-created instances"
-  value       = var.keypair_private
-}
-
 output "keypair_public" {
   description = "The public SSH key, for SSH access to newly-created instances"
   value       = var.keypair_public

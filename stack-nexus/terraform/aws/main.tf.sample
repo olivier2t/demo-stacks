@@ -14,10 +14,6 @@ module "nexus" {
     monitoring_discovery = false
   }
 
-  #. keypair_private: ""
-  #+ The private SSH key, for SSH access to newly-created instances
-  keypair_private = var.keypair_private
-
   #. keypair_public: ""
   #+ The public SSH key, for SSH access to newly-created instances
   keypair_public = var.keypair_public

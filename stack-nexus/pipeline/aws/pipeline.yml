@@ -129,7 +129,7 @@ resources:
       # nexus_instance_type: ((nexus_instance_type))
       # nexus_disk_size: ((nexus_disk_size))
       # nexus_port: ((nexus_default_port))
-      keypair_private: ((keypair_private))
+      # keypair_private: ((keypair_private))
       keypair_public: ((keypair_public))
       env: ((env))
       project: ((project))
