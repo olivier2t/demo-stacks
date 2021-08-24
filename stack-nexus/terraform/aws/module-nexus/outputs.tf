@@ -1,4 +1,17 @@
 #
+# Keypair
+#
+output "keypair_private" {
+  description = "The private SSH key, for SSH access to newly-created instances"
+  value       = var.keypair_private
+}
+
+output "keypair_public" {
+  description = "The public SSH key, for SSH access to newly-created instances"
+  value       = var.keypair_public
+}
+
+#
 # VPC outputs
 #
 output "vpc_id" {
@@ -29,6 +42,11 @@ output "bastion_ip" {
   value       = aws_eip.bastion.public_ip
 }
 
+output "bastion_allowed_networks" {
+  description = "Networks allowed to connect to the bastion using SSH"
+  value       = var.bastion_allowed_networks
+}
+
 output "bastion_sg" {
   description = "The bastion security group ID."
   value       = aws_security_group.bastion.id
@@ -50,6 +68,11 @@ output "nexus_ip" {
 output "nexus_port" {
   description = "Port where Nexus Repository service is exposed"
   value = var.nexus_port
+}
+
+output "nexus_admin_password" {
+  description = "Initial admin password in case of first installation"
+  value = var.nexus_admin_password
 }
 
 output "nexus_sg" {

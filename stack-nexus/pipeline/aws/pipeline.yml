@@ -270,9 +270,10 @@ jobs:
                 python -c "import json; print('\n'.join([ '%s: \"%s\"' % (k,v) for k, v in json.load(open('terraform/metadata', 'r')).items()]))" | tee terraform-env/env.yml
                 python -c "import json; print('\n'.join([ '%s=%s' % (k,v) for k, v in json.load(open('terraform/metadata', 'r')).items()]))" | tee terraform-env/env
                 source terraform-env/env
-                echo "Nexus Repository will be accessible on http://$nexus_ip:$nexus_port"
                 export SSH_JUMP_URL="$bastion_user@$bastion_ip"
                 echo "Ansible connects via bastion using $SSH_JUMP_URL"
+                echo "Nexus Repository will be accessible at http://$nexus_ip:$nexus_port"
+                echo "Admin password: $nexus_admin_password"
                 /usr/bin/ansible-runner
           caches:
             - path: ansible-playbook/roles
@@ -297,7 +298,6 @@ jobs:
             env: ((env))
             project: ((project))
             customer: ((customer))
-            nexus_admin_password: ((nexus_default_admin_password))
 
         on_success:
           do:

@@ -1,4 +1,17 @@
 #
+# Keypair
+#
+output "keypair_private" {
+  description = "The private SSH key, for SSH access to newly-created instances"
+  value       = module.nexus.keypair_private
+}
+
+output "keypair_public" {
+  description = "The public SSH key, for SSH access to newly-created instances"
+  value       = module.nexus.keypair_public
+}
+
+#
 # VPC outputs
 #
 output "vpc_id" {
@@ -32,6 +45,11 @@ output "bastion_ip" {
 output "bastion_user" {
   description = "The username to use to connect to the bastion EC2 server. Set to 'admin' because we use debian OS."
   value       = "admin"
+}
+
+output "bastion_allowed_networks" {
+  description = "Networks allowed to connect to the bastion using SSH"
+  value       = module.nexus.bastion_allowed_networks
 }
 
 output "bastion_sg" {
@@ -72,15 +90,3 @@ output "nexus_sg" {
   value       = module.nexus.nexus_sg
 }
 
-#
-# Keypair
-#
-output "keypair_private" {
-  description = "The private SSH key, for SSH access to newly-created instances"
-  value       = var.keypair_private
-}
-
-output "keypair_public" {
-  description = "The public SSH key, for SSH access to newly-created instances"
-  value       = var.keypair_public
-}
