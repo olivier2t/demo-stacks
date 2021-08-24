@@ -9,16 +9,17 @@ module "nexus" {
 
   #. extra_tags (optional): {}
   #+ Dict of extra tags to add on resources. format { "foo" = "bar" }.
-  extra_tags:
-  - demo: true
-  - monitoring_discovery: false
+  extra_tags = {
+    demo = true
+    monitoring_discovery = false
+  }
 
-  # . keypair_private: ""
-  # + The private SSH key, for SSH access to newly-created instances
+  #. keypair_private: ""
+  #+ The private SSH key, for SSH access to newly-created instances
   keypair_private = var.keypair_private
 
-  # . keypair_public: ""
-  # + The public SSH key, for SSH access to newly-created instances
+  #. keypair_public: ""
+  #+ The public SSH key, for SSH access to newly-created instances
   keypair_public = var.keypair_public
 
   #

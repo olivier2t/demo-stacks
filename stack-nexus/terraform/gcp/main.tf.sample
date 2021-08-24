@@ -9,7 +9,10 @@ module "nexus" {
 
   #. extra_tags (optional): {}
   #+ Dict of extra tags to add on aws resources. format { "foo" = "bar" }.
-  extra_tags = { "demo" = true }
+  extra_tags = {
+    demo = true
+    monitoring_discovery = false
+  }
 
   # . keypair_public: ""
   # + The public SSH key, for SSH access to newly-created instances
