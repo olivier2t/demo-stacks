@@ -153,6 +153,7 @@ groups:
     - terraform-plan
     - terraform-apply
     - deploy-nexus
+    - post-deployment
     
 - name: destroy
   jobs:
@@ -338,6 +339,7 @@ jobs:
                     text: |
                       Nexus Repository url :
                       http://$nexus_ip:$nexus_port
+
             - put: cycloid-event
               params:
                 vars_file: tfstate-env/env.yml
@@ -355,10 +357,6 @@ jobs:
     build_logs_to_retain: 10
     plan:
       - do:
-        - get: tfstate
-          trigger: true
-          passed: deploy-nexus
-
         - task: configure-project-backends
           config:
             platform: linux
@@ -372,10 +370,14 @@ jobs:
                 - '-c'
                 - |
                   echo "Login to Cycloid API:"
-                  cy login --org ${ORGANIZATION} --api-key ${API_KEY}
-                  
+                  return_code=$(cy login --org ${ORGANIZATION} --api-key ${API_KEY})
+                  if [[ "$return_code" != "200" && "$return_code" != "422" ]]; then
+                      echo "error, return code $return_code"
+                      cat output
+                      exit 1
+                  fi
                   echo "Configuring infraView:"
-                  cy external-backend create infraview AWSRemoteTFState \
+                  return_code=$(cy external-backend create infraview AWSRemoteTFState \
                   --org ${ORGANIZATION} \
                   --project ${PROJECT} \
                   --env ${ENV} \
@@ -383,18 +385,22 @@ jobs:
                   --bucket-name ${BUCKET_NAME} \
                   --bucket-path ${BUCKET_PATH} \
                   --region ${AWS_REGION} \
-                  --cred ${EXTERNAL_BACKEND_AWS_CRED_NAME}
-                  
-            params:
-              ORGANIZATION: ((customer))
-              PROJECT: ((project))
-              ENV: ((env))
-              API_URL: ((cycloid_api_url))
-              API_KEY: ((api_key))
-              BUCKET_NAME: ((terraform_storage_bucket_name))
-              BUCKET_PATH: ((project))/((env))/((project))-((env)).tfstate
-              AWS_REGION: ((aws_region))
-              EXTERNAL_BACKEND_AWS_CRED_NAME: ((external_backend_aws_cred_name))
+                  --cred ${EXTERNAL_BACKEND_AWS_CRED_NAME})
+                  if [[ "$return_code" != "200" && "$return_code" != "422" ]]; then
+                      echo "error, return code $return_code"
+                      cat output
+                      exit 1
+                  fi
+          params:
+            ORGANIZATION: ((customer))
+            PROJECT: ((project))
+            ENV: ((env))
+            API_URL: ((cycloid_api_url))
+            API_KEY: ((api_key))
+            BUCKET_NAME: ((terraform_storage_bucket_name))
+            BUCKET_PATH: ((project))/((env))/((project))-((env)).tfstate
+            AWS_REGION: ((aws_region))
+            EXTERNAL_BACKEND_AWS_CRED_NAME: ((external_backend_aws_cred_name))
 
   - name: terraform-destroy
     serial: true
