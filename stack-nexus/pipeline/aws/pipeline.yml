@@ -105,6 +105,13 @@ resources:
     url: ((slack_hook))
   icon: slack
 
+# 60 minutes timer to trigger destroy periodically
+- name: every-1h
+  type: time
+  icon: timer
+  source:
+    interval: 60m
+
 # The Terraform stack (will be merged with the config)
 - name: git_stack-terraform
   type: git
