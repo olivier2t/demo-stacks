@@ -76,7 +76,7 @@ resources:
   source:
     feature: infrapolicy
     api_key: ((cycloid_api_key))
-    api_url: 'https://http-api.cycloid.io'
+    api_url: ((cycloid_api_url))
     env: ((env))
     org: ((customer))
     project: ((project))
@@ -86,7 +86,7 @@ resources:
   type: cycloid-events
   source:
     api_key: ((cycloid_api_key))
-    api_url: 'https://http-api.cycloid.io'
+    api_url: ((cycloid_api_url))
     icon: fa-code-branch
     organization: ((customer))
     severity: info
@@ -189,13 +189,14 @@ jobs:
         params:
           plan_only: true
           terraform_source: merged-stack/
+        get_params:
           # Generate a plan.json file for infrapolicy check - more info at https://github.com/ljfranklin/terraform-resource
           output_planfile: true
       
       # Do the infrapolicy check
       - put: infrapolicy
         params:
-          tfplan_path: plan.json
+          tfplan_path: tfstate/plan.json
 
   # Merge and trigger an apply manually (no autostart of this job)
   - name: terraform-apply
@@ -349,6 +350,51 @@ jobs:
                         </ul>
                 title: The project ((project)) on ((env)) environment deployed successfully
 
+  - name: post-deployment
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - do:
+        - get: tfstate
+          trigger: true
+          passed: deploy-nexus
+
+        - task: configure-project-backends
+          config:
+            platform: linux
+            image_resource:
+              type: docker-image
+              source:
+                repository: cycloid/cycloid-toolkit
+            run:
+              path: /bin/bash
+              args:
+                - '-c'
+                - |
+                  echo "Login to Cycloid API:"
+                  cy login --org ${ORGANIZATION} --api-key ${API_KEY}
+                  
+                  echo "Configuring infraView:"
+                  cy external-backend create infraview AWSRemoteTFState \
+                  --org ${ORGANIZATION} \
+                  --project ${PROJECT} \
+                  --env ${ENV} \
+                  --api-url ${API_URL} \
+                  --bucket-name ${BUCKET_NAME} \
+                  --bucket-path ${BUCKET_PATH} \
+                  --region ${AWS_REGION} \
+                  --cred ${EXTERNAL_BACKEND_AWS_CRED_NAME}
+                  
+            params:
+              ORGANIZATION: ((customer))
+              PROJECT: ((project))
+              ENV: ((env))
+              API_URL: ((cycloid_api_url))
+              API_KEY: ((api_key))
+              BUCKET_NAME: ((terraform_storage_bucket_name))
+              BUCKET_PATH: ((project))/((env))/((project))-((env)).tfstate
+              AWS_REGION: ((aws_region))
+              EXTERNAL_BACKEND_AWS_CRED_NAME: ((external_backend_aws_cred_name))
 
   - name: terraform-destroy
     serial: true

@@ -12,6 +12,10 @@ aws_access_key: ((aws_cycloid-demo.access_key))
 #+ Amazon AWS secret key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
 aws_secret_key: ((aws_cycloid-demo.secret_key))
 
+#. external_backend_aws_cred_name (required): cycloid-demo
+#+ Vault AWS secret name.
+external_backend_aws_cred_name: cycloid-demo
+
 #. aws_default_region (required): eu-west-1
 #+ Amazon AWS region to use for Terraform.
 aws_region: eu-west-1
@@ -136,6 +140,10 @@ project: ($ project $)
 #. customer (required): ($ organization_canonical $)
 #+ Name of the Cycloid Organization, used as customer variable name.
 customer: ($ organization_canonical $)
+
+#. cycloid_api_url (required): https://http-api.cycloid.io
+#+ Cycloid API URL.
+cycloid_api_url: 'https://http-api.cycloid.io'
 
 #. cycloid_api_key (required): ((custom_api-key-admin.key))
 #+ API key to grant admin acess to Cycloid API.
