@@ -486,29 +486,29 @@ jobs:
             type: docker-image
             source:
               repository: cycloid/cycloid-toolkit
-            run:
-              path: /bin/bash
-              args:
-                - '-c'
-                - |
-                  echo "Login to Cycloid API:"
-                  cy login --org ${ORGANIZATION} --api-key ${API_KEY} >output
-                  if [[ "$?" != "0" ]]; then
-                      echo "Login Error: cy returned code $?"
-                      cat output
-                      exit 1
-                  fi
-                  echo "Pause pipeline:"
-                  cy pipeline pause \
-                  --org ${ORGANIZATION} \
-                  --project ${PROJECT} \
-                  --env ${ENV} \
-                  --api-url ${API_URL} >output
-                  if [[ "$?" != "0" ]]; then
-                      echo "Pause Pipeline Error: cy returned code $?"
-                      cat output
-                      exit 1
-                  fi
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                echo "Login to Cycloid API:"
+                cy login --org ${ORGANIZATION} --api-key ${API_KEY} >output
+                if [[ "$?" != "0" ]]; then
+                    echo "Login Error: cy returned code $?"
+                    cat output
+                    exit 1
+                fi
+                echo "Pause pipeline:"
+                cy pipeline pause \
+                --org ${ORGANIZATION} \
+                --project ${PROJECT} \
+                --env ${ENV} \
+                --api-url ${API_URL} >output
+                if [[ "$?" != "0" ]]; then
+                    echo "Pause Pipeline Error: cy returned code $?"
+                    cat output
+                    exit 1
+                fi
 
           params:
             ORGANIZATION: ((customer))
@@ -517,22 +517,22 @@ jobs:
             API_URL: ((cycloid_api_url))
             API_KEY: ((cycloid_api_key))
 
-    on_failure:
-      put: slack-alert
-      params:
-        env_file: tfstate-env/env
-        attachments:
-          - author_link: 'https://www.cycloid.io/'
-            author_name: cycloid.io
-            color: danger
-            title: '[FAILED]'
-            title_link: 'https://console.cycloid.io/organizations/((customer))/projects/((project))/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_ID'
-            pretext: Terraform destroy FAILED.
-            fallback: 'Fail to destroy Nexus Repository demo project'
-            fields:
-              - short: true
-                title: Project
-                value: ((project))
-              - short: true
-                title: Environment
-                value: ((env))
+        on_failure:
+          put: slack-alert
+          params:
+            env_file: tfstate-env/env
+            attachments:
+              - author_link: 'https://www.cycloid.io/'
+                author_name: cycloid.io
+                color: danger
+                title: '[FAILED]'
+                title_link: 'https://console.cycloid.io/organizations/((customer))/projects/((project))/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_ID'
+                pretext: Terraform destroy FAILED.
+                fallback: 'Fail to destroy Nexus Repository demo project'
+                fields:
+                  - short: true
+                    title: Project
+                    value: ((project))
+                  - short: true
+                    title: Environment
+                    value: ((env))
