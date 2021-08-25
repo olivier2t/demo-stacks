@@ -22,6 +22,12 @@ resource_types:
     repository: ljfranklin/terraform-resource
     tag: ((terraform_version))
 
+- name: cycloid-resource
+  type: docker-image
+  source:
+    repository: cycloid/cycloid-resource
+    tag: latest
+
 - name: slack-notification
   type: docker-image
   source:
@@ -38,6 +44,43 @@ resource_types:
 
 
 resources:
+- name: tfstate
+  type: terraform
+  icon: terraform
+  source:
+    env_name: ((env))
+    backend_type: s3
+    backend_config:
+      bucket: ((terraform_storage_bucket_name))
+      key: ((project))-((env)).tfstate
+      workspace_key_prefix: ((project))
+      region: ((aws_region))
+      access_key: ((aws_access_key))
+      secret_key: ((aws_secret_key))
+    vars:
+      aws_access_key: ((aws_access_key))
+      aws_secret_key: ((aws_secret_key))
+      aws_region: ((aws_region))
+      keypair_public: ((keypair_public))
+      env: ((env))
+      project: ((project))
+      customer: ((customer))
+    env:
+      AWS_ACCESS_KEY_ID: ((aws_access_key))
+      AWS_DEFAULT_REGION: ((aws_region))
+      AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
+
+# The Cycloid infrapolicy resource to check terraform plan against org rules
+- name: infrapolicy
+  type: cycloid-resource
+  source:
+    feature: infrapolicy
+    api_key: ((cycloid_api_key))
+    api_url: 'https://http-api.cycloid.io'
+    env: ((env))
+    org: ((customer))
+    project: ((project))
+
 # The Cycloid event resource to log events
 - name: cycloid-event
   type: cycloid-events
@@ -104,41 +147,6 @@ resources:
     paths:
       - ((config_ansible_path))/*
 
-- name: tfstate
-  type: terraform
-  icon: terraform
-  source:
-    env_name: ((env))
-    backend_type: s3
-    backend_config:
-      bucket: ((terraform_storage_bucket_name))
-      key: ((project))-((env)).tfstate
-      workspace_key_prefix: ((project))
-      region: ((aws_region))
-      access_key: ((aws_access_key))
-      secret_key: ((aws_secret_key))
-    vars:
-      aws_access_key: ((aws_access_key))
-      aws_secret_key: ((aws_secret_key))
-      aws_region: ((aws_region))
-      # cidr: ((cidr))
-      # private_subnets: ((private_subnets))
-      # public_subnets: ((public_subnets))
-      # bastion_allowed_networks: ((bastion_allowed_networks))
-      # bastion_instance_type: ((bastion_instance_type))
-      # nexus_instance_type: ((nexus_instance_type))
-      # nexus_disk_size: ((nexus_disk_size))
-      # nexus_port: ((nexus_default_port))
-      # keypair_private: ((keypair_private))
-      keypair_public: ((keypair_public))
-      env: ((env))
-      project: ((project))
-      customer: ((customer))
-    env:
-      AWS_ACCESS_KEY_ID: ((aws_access_key))
-      AWS_DEFAULT_REGION: ((aws_region))
-      AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
-
 groups:
 - name: overview
   jobs:
@@ -181,6 +189,13 @@ jobs:
         params:
           plan_only: true
           terraform_source: merged-stack/
+          # Generate a plan.json file for infrapolicy check - more info at https://github.com/ljfranklin/terraform-resource
+          output_planfile: true
+      
+      # Do the infrapolicy check
+      - put: infrapolicy
+        params:
+          tfplan_path: plan.json
 
   # Merge and trigger an apply manually (no autostart of this job)
   - name: terraform-apply

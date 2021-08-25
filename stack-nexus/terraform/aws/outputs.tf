@@ -53,7 +53,7 @@ output "bastion_sg_allow" {
 # Nexus Repository outputs
 #
 output "nexus_ip" {
-  description = "The IP address the Nexus Repository EC2 server"
+  description = "The IP address the Nexus Repository server"
   value       = module.nexus.nexus_ip
 }
 
