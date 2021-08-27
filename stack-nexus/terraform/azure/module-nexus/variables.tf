@@ -43,16 +43,25 @@ variable "bastion_allowed_networks" {
 
 variable "bastion_instance_type" {
   description = "Instance type for the bastion"
-  default     = "t3.micro"
+  default     = "Standard_DS1_v2"
 }
 
+variable "bastion_os_user" {
+  description = "Admin username to connect to instance via SSH"
+  default     = "admin"
+}
 
 #
 # Nexus Repository
 #
 variable "nexus_instance_type" {
   description = "Instance type for the Nexus Repository"
-  default     = "t3.micro"
+  default     = "Standard_DS1_v2"
+}
+
+variable "nexus_os_user" {
+  description = "Admin username to connect to instance via SSH"
+  default     = "admin"
 }
 
 variable "nexus_disk_size" {

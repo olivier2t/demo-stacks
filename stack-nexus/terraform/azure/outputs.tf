@@ -29,9 +29,14 @@ output "bastion_ip" {
   value       = module.nexus.bastion_ip
 }
 
-output "bastion_user" {
-  description = "The username to use to connect to the bastion EC2 server. Set to 'admin' because we use debian OS."
-  value       = "admin"
+output "bastion_os_user" {
+  description = "The username to use to connect to the bastion server."
+  value       = module.nexus.bastion_os_user
+}
+
+output "bastion_allowed_networks" {
+  description = "Networks allowed to connect to the bastion using SSH"
+  value       = module.nexus.bastion_allowed_networks
 }
 
 output "bastion_sg" {
@@ -39,16 +44,11 @@ output "bastion_sg" {
   value       = module.nexus.bastion_sg
 }
 
-output "bastion_sg_allow" {
-  description = "The security group ID to allow SSH traffic from the bastion to the infra instances"
-  value       = module.nexus.bastion_sg_allow
-}
-
 #
 # Nexus Repository outputs
 #
 output "nexus_ip" {
-  description = "The IP address the Nexus Repository EC2 server"
+  description = "The IP address the Nexus Repository server"
   value       = module.nexus.nexus_ip
 }
 
@@ -57,12 +57,18 @@ output "nexus_port" {
   value       = module.nexus.nexus_port
 }
 
-output "nexus_user" {
-  description = "The username to use to connect to the Nexus Repository EC2 server. Set to 'admin' because we use debian OS."
-  value       = "admin"
+output "nexus_os_user" {
+  description = "The username to use to connect to the Nexus Repository instance via SSH."
+  value       = module.nexus.nexus_os_user
+}
+
+output "nexus_admin_password" {
+  description = "Initial admin password in case of first installation."
+  value       = module.nexus.nexus_admin_password
 }
 
 output "nexus_sg" {
   description = "The Nexus Repository security group ID."
   value       = module.nexus.nexus_sg
 }
+

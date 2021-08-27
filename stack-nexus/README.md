@@ -83,6 +83,6 @@ To run this stack, an [S3 bucket](https://docs.aws.amazon.com/quickstarts/latest
 | bastion_sg_allow | The security group ID to allow SSH traffic from the bastion to the instances in the VPC |
 | nexus_ip | The IP address the Nexus Repository server. |
 | nexus_port | Port where Nexus Repository service is exposed. |
-| nexus_user | The username to use to connect to the Nexus Repository EC2 server. Set to 'admin' because we use debian OS. |
+| nexus_os_user | The username to use to connect to the Nexus Repository EC2 server. Set to 'admin' because we use debian OS. |
 | nexus_admin_password | Initial admin password in case of first installation. |
 | nexus_sg | The Nexus Repository security group ID. |

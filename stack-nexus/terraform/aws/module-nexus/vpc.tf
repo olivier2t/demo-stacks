@@ -12,5 +12,5 @@ module "infra_vpc" {
   single_nat_gateway = true
   enable_nat_gateway = true
 
-  tags = local.standard_tags
+  tags = local.merged_tags
 }

@@ -94,15 +94,6 @@
       group: "{{ nexus_os_group }}"
       state: link
 
-  # - name: create symlink nexus-latest
-  #   shell: ls -d /opt/nexus-3*
-  #   register: src_nexus
-  # - stat:
-  #     path: /opt/nexus-latest
-  #   register: dest_nexus
-  # - command: ln -s {{ src_nexus.stdout }} /opt/nexus-latest
-  #   when: dest_nexus.stat.isdir is not defined
-
   - name: copy nexus.rc
     template:
       src: nexus.rc.j2
@@ -127,12 +118,6 @@
       dest: "{{ nexus_installation_dir }}/nexus-latest/etc/nexus-default.properties"
       regexp: "^application-port=.*"
       line: "application-port={{ nexus_port }}"
-
-  # - name: Bind nexus service to 127.0.0.1 only
-  #   lineinfile:
-  #     dest: "{{ nexus_default_settings_file }}"
-  #     regexp: "^application-host=.*"
-  #     line: "application-host=127.0.0.1"
 
   - name: ensure all subdirectories in /opt are owned by nexus user
     file:

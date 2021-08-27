@@ -20,9 +20,19 @@ external_backend_aws_cred_name: cycloid-demo
 #+ Amazon AWS region to use for Terraform.
 aws_region: eu-west-1
 
+
+#
+# Terraform remote state file
+#
+
 #. terraform_storage_bucket_name (required): ($ organization_canonical $)-terraform-remote-state
 #+ AWS S3 bucket name to store terraform remote state file.
 terraform_storage_bucket_name: ($ organization_canonical $)-terraform-remote-state
+
+
+#
+# Keypair to use for newly created instances
+#
 
 #. keypair_public (required): ((custom_keypair.ssh_pub))
 #+ The public SSH key to provision to bastion for external access through SSH
@@ -80,15 +90,15 @@ stack_ansible_path: stack-nexus/ansible
 
 #. cidr (required): '10.0.0.0/16'
 #+ The CIDR of the VPC.
-# cidr: '10.0.0.0/16'
+cidr: '10.0.0.0/16'
 
 #. private_subnets (required): ['10.0.1.0/24']
 #+ The private subnets for the VPC.
-# private_subnets: ['10.0.1.0/24']
+private_subnets: ['10.0.1.0/24']
 
 #. public_subnets (required): ['10.0.0.0/24']
 #+ The public subnets for the VPC.
-# public_subnets: ['10.0.0.0/24']
+public_subnets: ['10.0.0.0/24']
 
 
 #
@@ -97,11 +107,11 @@ stack_ansible_path: stack-nexus/ansible
 
 #. bastion_instance_type (required): t3.small
 #+ Instance type for the bastion.
-# bastion_instance_type: t3a.small
+bastion_instance_type: t3a.small
 
 #. bastion_allowed_networks (required): ['0.0.0.0/0']
 #+ Networks allowed to connect to the bastion using SSH.
-# bastion_allowed_networks: ['0.0.0.0/0']
+bastion_allowed_networks: ['0.0.0.0/0']
 
 
 #
@@ -110,19 +120,19 @@ stack_ansible_path: stack-nexus/ansible
 
 #. nexus_instance_type (required): t3a.medium
 #+ Instance type for the Nexus Repository.
-# nexus_instance_type: t3a.medium
+nexus_instance_type: t3a.medium
 
 #. nexus_disk_size (required): "20"
 #+ Disk size for the Nexus Repository (Go).
-# nexus_disk_size: "20"
+nexus_disk_size: "20"
 
 #. nexus_port (required): "8088"
 #+ Port where Nexus Repository service is exposed.
-# nexus_port: "8088"
+nexus_port: "8088"
 
 #. nexus_admin_password (required): changeme
 #+ Initial admin password in case of first installation.
-# nexus_admin_password: changeme
+nexus_admin_password: changeme
 
 
 #
@@ -153,9 +163,9 @@ cycloid_api_key: ((custom_api-key-admin.key))
 #+ URL to send notifications to cycloid-demo channel.
 slack_hook: ((raw_slack-hooks.demo_channel))
 
-#. terraform_version (required): '0.15.2'
+#. terraform_version (required): '1.0.5'
 #+ terraform version used to execute your code.
-terraform_version: '0.15.2'
+terraform_version: '1.0.5'
 
 #. cycloid-toolkit ansible version (required): 'v2.7'
 #+ cycloid-toolkit docker image tag to use (https://hub.docker.com/r/cycloid/cycloid-toolkit/tags).

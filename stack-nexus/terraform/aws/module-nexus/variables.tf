@@ -55,6 +55,11 @@ variable "nexus_instance_type" {
   default     = "t3.micro"
 }
 
+variable "nexus_os_user" {
+  description = "Admin username to connect to instance via SSH. Set to 'admin' because we use debian OS."
+  default     = "admin"
+}
+
 variable "nexus_disk_size" {
   description = "Disk size for the Nexus Repository (Go)"
   default = "20"

@@ -24,6 +24,8 @@ aws:
         values: ["eu-north-1","ap-south-1","eu-west-3","eu-west-2","eu-west-1","ap-northeast-2","ap-northeast-1","sa-east-1","ca-central-1","ap-southeast-1","ap-southeast-2","eu-central-1","us-east-1","us-east-2","us-west-1","us-west-2"]
         default: eu-west-1
         required: true
+
+    Terraform remote state file:
       - name: "Terraform storage bucket"
         description: "AWS S3 bucket name to store terraform remote state file."
         key: terraform_storage_bucket_name
@@ -31,6 +33,8 @@ aws:
         type: string
         default: ($ organization_canonical $)-terraform-remote-state
         required: true
+
+    Keypair for new instances:
       - name: "Keypair public"
         description: "The public SSH key, for SSH access to newly-created instances."
         key: keypair_public
@@ -164,31 +168,81 @@ aws:
 azure:
   pipeline:
     Cloud Provider:
-      - name: "AWS access key"
-        description: "Amazon AWS access key for Terraform."
-        key: aws_access_key
+      - name: "Azure subscription ID"
+        description: "Azure subscription ID for Terraform."
+        key: azure_subscription_id
         widget: cy_cred
         type: string
-        default: "((aws_cycloid-demo.access_key))"
-      - name: "AWS secret key"
-        description: "Amazon AWS secret key for Terraform."
-        key: aws_secret_key
+        default: "((azure_admin.subscription_id))"
+        required: true
+      - name: "Azure tenant ID"
+        description: "Azure tenant ID for Terraform."
+        key: azure_tenant_id
         widget: cy_cred
         type: string
-        default: "((aws_cycloid-demo.secret_key))"
-      - name: "Amazon AWS region"
-        description: "Amazon AWS region to use for Terraform."
-        key: aws_region
+        default: "((azure_admin.tenant_id))"
+        required: true
+      - name: "Azure client ID"
+        description: "Azure client ID for Terraform."
+        key: azure_client_id
+        widget: cy_cred
+        type: string
+        default: "((azure_admin.client_id))"
+        required: true
+      - name: "Azure client secret"
+        description: "Azure client secret for Terraform."
+        key: azure_client_secret
+        widget: cy_cred
+        type: string
+        default: "((azure_admin.client_secret))"
+        required: true
+      - name: "Azure location"
+        description: "Azure location for Terraform."
+        key: azure_location
         widget: auto_complete
         type: string
-        values: ["eu-north-1","ap-south-1","eu-west-3","eu-west-2","eu-west-1","ap-northeast-2","ap-northeast-1","sa-east-1","ca-central-1","ap-southeast-1","ap-southeast-2","eu-central-1","us-east-1","us-east-2","us-west-1","us-west-2"]
-        default: eu-west-1
-      - name: "Terraform storage bucket"
-        description: "AWS S3 bucket name to store terraform remote state file."
-        key: terraform_storage_bucket_name
+        values: ["West Europe","North Europe","France Central","France South","East US","West US","East Asia","Southeast Asia","South Africa North","South Africa West","Australia Central","China East","China North"]
+        default: "West Europe"
+        required: true
+
+    Terraform remote state file:
+      - name: "Terraform Azure Resource Group"
+        description: "Azure Resource Group of the Storage Account to use to store terraform remote state file."
+        key: terraform_resource_group_name
         widget: simple_text
         type: string
-        default: ($ organization_canonical $)-terraform-remote-state
+        default: ($ organization_canonical $)-terraform
+        required: true
+      - name: "Terraform Azure Storage Account name"
+        description: "Azure Storage Account name to use to store terraform remote state file."
+        key: terraform_storage_account_name
+        widget: simple_text
+        type: string
+        default: ((azure_storage_aks.account_name))
+        required: true
+      - name: "Terraform Azure Storage Account key"
+        description: "Azure Storage Account key to use to store terraform remote state file."
+        key: terraform_storage_access_key
+        widget: simple_text
+        type: string
+        default: ((azure_storage_aks.access_key))
+        required: true
+      - name: "Terraform Azure Storage container name"
+        description: "Azure Storage container name to store terraform remote state file."
+        key: terraform_storage_container_name
+        widget: simple_text
+        type: string
+        default: ($ organization_canonical $)
+        required: true
+      - name: "Terraform Azure Storage container path"
+        description: "Azure Storage container path to store terraform remote state file."
+        key: terraform_storage_container_path
+        widget: simple_text
+        type: string
+        default: ($ project $)/($ environment $)
+        required: true
+
+    Keypair for new instances:
       - name: "Keypair public"
         description: "The public SSH key, for SSH access to newly-created instances."
         key: keypair_public
@@ -196,6 +250,7 @@ azure:
         type: string
         required: true
         default: "((custom_keypair.ssh_pub))"
+        required: true
       - name: "Keypair private"
         description: "The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion."
         key: keypair_private
@@ -203,6 +258,7 @@ azure:
         type: string
         required: true
         default: "((custom_keypair.ssh_prv))"
+        required: true
 
     Stack Configuration:
       - name: "Config repository"
@@ -265,6 +321,7 @@ azure:
             - t3a.nano
             - t3a.micro
             - t3a.small
+        required: true
       - name: "Connection to bastion"
         description: "Networks allowed to connect to the bastion using SSH."
         key: bastion_allowed_networks
@@ -273,6 +330,7 @@ azure:
         required: true
         default:
             - 0.0.0.0/0
+        required: true
 
     Nexus:
       - name: "Instance type"
@@ -287,6 +345,7 @@ azure:
             - t3a.large
             - t3a.xlarge
             - t3a.2xlarge
+        required: true
       - name: "Disk size"
         unit: Go
         description: "Disk size for the Nexus Repository."
@@ -297,6 +356,21 @@ azure:
         values:
             - 10
             - 250
+        required: true
+      - name: "Port"
+        description: "Port where Nexus Repository service is exposed."
+        key: nexus_port
+        widget: simple_text
+        type: string
+        default: "8081"
+        required: true
+      - name: "Admin password"
+        description: "Initial admin password for Nexus Repository first installation."
+        key: nexus_admin_password
+        widget: simple_text
+        type: string
+        default: "changeme"
+        required: true
 
 
 gcp:

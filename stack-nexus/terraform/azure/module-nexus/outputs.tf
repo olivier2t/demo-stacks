@@ -3,7 +3,7 @@
 #
 output "vpc_id" {
   description = "The VPC ID for the VPC"
-  value       = module.infra_vpc.vpc_id
+  value       = azurerm_virtual_network.nexus.id
 }
 
 output "vpc_cidr" {
@@ -13,12 +13,12 @@ output "vpc_cidr" {
 
 output "private_subnets" {
   description = "The private subnets for the VPC"
-  value       = module.infra_vpc.private_subnets
+  value       = var.private_subnets
 }
 
 output "public_subnets" {
   description = "The public subnets for the VPC"
-  value       = module.infra_vpc.public_subnets
+  value       = var.public_subnets
 }
 
 #
@@ -26,7 +26,12 @@ output "public_subnets" {
 #
 output "bastion_ip" {
   description = "The EIP attached to the bastion EC2 server"
-  value       = aws_instance.bastion.public_ip
+  value       = azurerm_linux_virtual_machine.bastion.public_ip_address
+}
+
+output "bastion_os_user" {
+  description = "Admin username to connect to instance via SSH"
+  value       = var.bastion_os_user
 }
 
 output "bastion_allowed_networks" {
@@ -36,12 +41,7 @@ output "bastion_allowed_networks" {
 
 output "bastion_sg" {
   description = "The bastion security group ID."
-  value       = aws_security_group.bastion.id
-}
-
-output "bastion_sg_allow" {
-  description = "The security group ID to allow SSH traffic from the bastion to the infra instances"
-  value       = aws_security_group.allow_bastion_infra.id
+  value       = azurerm_network_security_group.bastion.id
 }
 
 #
@@ -49,7 +49,7 @@ output "bastion_sg_allow" {
 #
 output "nexus_ip" {
   description = "The IP address the Nexus Repository EC2 server"
-  value       = aws_instance.nexus.public_ip
+  value       = azurerm_linux_virtual_machine.nexus.public_ip_address
 }
 
 output "nexus_os_user" {
@@ -69,5 +69,5 @@ output "nexus_admin_password" {
 
 output "nexus_sg" {
   description = "The Nexus Repository security group ID."
-  value       = aws_security_group.nexus.id
+  value       = azurerm_network_security_group.nexus.id
 }
