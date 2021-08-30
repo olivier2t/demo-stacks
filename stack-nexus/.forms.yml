@@ -214,14 +214,14 @@ azure:
       - name: "Terraform Azure Storage Account name"
         description: "Azure Storage Account name to use to store terraform remote state file."
         key: terraform_storage_account_name
-        widget: simple_text
+        widget: cy_cred
         type: string
         default: ((azure_storage_aks.account_name))
         required: true
       - name: "Terraform Azure Storage Account key"
         description: "Azure Storage Account key to use to store terraform remote state file."
         key: terraform_storage_access_key
-        widget: simple_text
+        widget: cy_cred
         type: string
         default: ((azure_storage_aks.access_key))
         required: true

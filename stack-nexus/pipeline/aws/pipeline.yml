@@ -86,11 +86,11 @@ resources:
   type: cycloid-resource
   source:
     feature: terracost
-  api_key: ((cycloid_api_key))
-  api_url: ((cycloid_api_url))
-  env: ((env))
-  org: ((customer))
-  project: ((project))
+    api_key: ((cycloid_api_key))
+    api_url: ((cycloid_api_url))
+    env: ((env))
+    org: ((customer))
+    project: ((project))
 
 # The Cycloid event resource to log events
 - name: cycloid-event
