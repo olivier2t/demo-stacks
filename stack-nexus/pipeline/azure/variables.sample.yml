@@ -129,9 +129,9 @@ public_subnets: ['10.0.0.0/24']
 # Bastion
 #
 
-#. bastion_instance_type (required): t3.small
+#. bastion_instance_type (required): Standard_DS1_v2
 #+ Instance type for the bastion.
-bastion_instance_type: t3a.small
+bastion_instance_type: Standard_DS1_v2
 
 #. bastion_allowed_networks (required): ['0.0.0.0/0']
 #+ Networks allowed to connect to the bastion using SSH.
@@ -142,9 +142,9 @@ bastion_allowed_networks: ['0.0.0.0/0']
 # Nexus
 #
 
-#. nexus_instance_type (required): t3a.medium
+#. nexus_instance_type (required): Standard_DS2_v2
 #+ Instance type for the Nexus Repository.
-nexus_instance_type: t3a.medium
+nexus_instance_type: Standard_DS2_v2
 
 #. nexus_disk_size (required): "20"
 #+ Disk size for the Nexus Repository (Go).

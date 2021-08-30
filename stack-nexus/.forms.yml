@@ -316,11 +316,10 @@ azure:
         key: bastion_instance_type
         widget: auto_complete
         type: string
-        default: "t3a.micro"
+        default: "Standard_DS1_v2"
         values:
-            - t3a.nano
-            - t3a.micro
-            - t3a.small
+            - Standard_DS1_v2
+            - Standard_DS2_v2
         required: true
       - name: "Connection to bastion"
         description: "Networks allowed to connect to the bastion using SSH."
@@ -338,13 +337,11 @@ azure:
         key: nexus_instance_type
         widget: auto_complete
         type: string
-        default: "t3a.medium"
+        default: "Standard_DS2_v2"
         values:
-            - t3a.small
-            - t3a.medium
-            - t3a.large
-            - t3a.xlarge
-            - t3a.2xlarge
+            - Standard_DS1_v2
+            - Standard_DS2_v2
+            - Standard_DS3_v2
         required: true
       - name: "Disk size"
         unit: Go
