@@ -106,7 +106,7 @@ aws:
       - name: "Instance type"
         description: "Instance type for the bastion."
         key: bastion_instance_type
-        widget: auto_complete
+        widget: slider_range
         type: string
         default: "t3a.micro"
         values:
@@ -128,15 +128,13 @@ aws:
       - name: "Instance type"
         description: "Instance type for the Nexus Repository."
         key: nexus_instance_type
-        widget: auto_complete
+        widget: slider_range
         type: string
         default: "t3a.medium"
         values:
-            - t3a.small
             - t3a.medium
             - t3a.large
             - t3a.xlarge
-            - t3a.2xlarge
         required: true
       - name: "Disk size"
         unit: Go
@@ -314,12 +312,13 @@ azure:
       - name: "Instance type"
         description: "Instance type for the bastion."
         key: bastion_instance_type
-        widget: auto_complete
+        widget: slider_range
         type: string
         default: "Standard_DS1_v2"
         values:
             - Standard_DS1_v2
             - Standard_DS2_v2
+            - Standard_DS3_v2
         required: true
       - name: "Connection to bastion"
         description: "Networks allowed to connect to the bastion using SSH."
@@ -335,7 +334,7 @@ azure:
       - name: "Instance type"
         description: "Instance type for the Nexus Repository."
         key: nexus_instance_type
-        widget: auto_complete
+        widget: slider_range
         type: string
         default: "Standard_DS2_v2"
         values:
