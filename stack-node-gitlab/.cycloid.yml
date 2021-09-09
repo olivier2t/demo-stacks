@@ -5,7 +5,7 @@ name: 'Node.js App from GitLab'
 canonical: 'node-app-gitlab'
 description: This stack deploys a Node.js app built by Gitlab CI in a single instance.
 author: 'Olivier de Turckheim'
-image: 'https://nodejs.org/static/images/logo.svg'
+image: 'https://nodejs.org/static/images/logo.png'
 status: 'private'
 keywords:
 - node

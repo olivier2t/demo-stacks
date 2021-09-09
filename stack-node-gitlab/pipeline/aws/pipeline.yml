@@ -370,7 +370,7 @@ jobs:
                   - author_link: 'https://www.cycloid.io/'
                     author_name: cycloid.io
                     color: good
-                    fallback: 'Simple Counter App from GitLab CI successfully deployed'
+                    fallback: 'Node.js App from GitLab CI successfully deployed'
                     fields:
                       - short: true
                         title: Project
@@ -378,11 +378,11 @@ jobs:
                       - short: true
                         title: Environment
                         value: ((env))
-                    pretext: Simple Counter App from GitLab CI was deployed successfully.
+                    pretext: Node.js App from GitLab CI was deployed successfully.
                     title: '[SUCCESS]'
                     title_link: 'https://console.cycloid.io/organizations/((customer))/projects/((project))/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_ID'
                     text: |
-                      Simple Counter App url: http://$app_ip:$app_port
+                      Node.js App url: http://$app_ip:$app_port
 
             - put: cycloid-event
               params:
@@ -392,7 +392,7 @@ jobs:
                         The project ((project)) on ((env)) environment has been deployed successfully.
                         </br>
                         <ul>
-                        <li>Simple Counter App url: <em><a target="_blank" href="http://$app_ip:$app_port">http://$app_ip:$app_port</a></em></li>
+                        <li>Node.js App url: <em><a target="_blank" href="http://$app_ip:$app_port">http://$app_ip:$app_port</a></em></li>
                         </ul>
                 title: Project ((project)) on ((env)) environment deployed successfully
 
@@ -404,7 +404,7 @@ jobs:
       - get: tfstate
         trigger: true
         passed:
-          - deploy-nexus
+          - deploy-app
 
       - do:
         - task: configure-project-backends
@@ -562,7 +562,7 @@ jobs:
                 title: '[FAILED]'
                 title_link: 'https://console.cycloid.io/organizations/((customer))/projects/((project))/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_ID'
                 pretext: Terraform destroy FAILED.
-                fallback: 'Fail to destroy Nexus Repository demo project'
+                fallback: 'Fail to destroy Node.js App project'
                 fields:
                   - short: true
                     title: Project
