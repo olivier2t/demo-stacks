@@ -1,0 +1,130 @@
+---
+# Configuration of the Cycloid stack
+version: '2'
+name: 'Node.js App from GitLab'
+canonical: 'node-app-gitlab'
+description: This stack deploys a Node.js app built by Gitlab CI in a single instance.
+author: 'Olivier de Turckheim'
+image: 'https://nodejs.org/static/images/logo.svg'
+status: 'private'
+keywords:
+- node
+- redis
+- demo
+- provider:aws
+- provider:azure
+- provider:gcp
+technologies:
+- technology: node
+  version: "14.17.6"
+
+config:
+  aws:
+    name: 'AWS'
+    description: 'Deploys a Node.js app from GitLab CI in a single AWS instance'
+    cloud_provider: aws
+    # Pipeline and variable configuration for the AWS CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/aws/pipeline.yml'
+      variables:
+        path: 'pipeline/aws/variables.sample.yml'
+        destination: '($ project $)/pipeline/aws/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/aws/main.tf.sample'
+        destination: '($ project $)/terraform/aws/($ environment $)/main.tf'
+
+  azure:
+    name: 'Azure'
+    description: 'Deploys a Node.js app from GitLab CI in a single Azure instance'
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the Azure CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/azure/pipeline.yml'
+      variables:
+        path: 'pipeline/azure/variables.sample.yml'
+        destination: '($ project $)/pipeline/azure/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/azure/main.tf.sample'
+        destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
+
+  gcp:
+    name: 'GCP'
+    description: 'Deploys a Node.js app from GitLab CI in a single GCP instance'
+    cloud_provider: google
+    # Pipeline and variable configuration for the GCP CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/gcp/pipeline.yml'
+      variables:
+        path: 'pipeline/gcp/variables.sample.yml'
+        destination: '($ project $)/pipeline/gcp/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/gcp/main.tf.sample'
+        destination: '($ project $)/terraform/gcp/($ environment $)/main.tf'
+
+  vmware:
+    name: 'VMware'
+    description: 'Deploys a Node.js app from GitLab CI in a single VMware instance'
+    cloud_provider: vmware
+    # Pipeline and variable configuration for the VMware CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/azure/pipeline.yml'
+      variables:
+        path: 'pipeline/azure/variables.sample.yml'
+        destination: '($ project $)/pipeline/azure/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/azure/main.tf.sample'
+        destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
+
+  fe:
+    name: 'Flexible Engine'
+    description: 'Deploys a Node.js app from GitLab CI in a single Flexible Engine instance'
+    cloud_provider: flexibleengine
+    # Pipeline and variable configuration for the Flexible Engine CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/azure/pipeline.yml'
+      variables:
+        path: 'pipeline/azure/variables.sample.yml'
+        destination: '($ project $)/pipeline/azure/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/azure/main.tf.sample'
+        destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
