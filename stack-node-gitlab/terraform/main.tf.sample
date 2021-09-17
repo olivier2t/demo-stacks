@@ -1,4 +1,4 @@
-module "node" {
+module "app" {
   #####################################
   # Do not modify the following lines #
   source   = "./module-node"
