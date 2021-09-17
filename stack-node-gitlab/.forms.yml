@@ -1,5 +1,5 @@
 ---
-aws:
+gitlab-ci:
   pipeline:
     Cloud Provider:
       - name: "AWS access key"
