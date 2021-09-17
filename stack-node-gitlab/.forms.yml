@@ -88,7 +88,7 @@ gitlab-ci:
         required: true
       - name: "Instance type"
         description: "Instance type for the Node instance."
-        key: nexus_instance_type
+        key: node_instance_type
         widget: slider_list
         type: string
         default: "t3a.micro"

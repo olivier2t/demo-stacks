@@ -35,7 +35,7 @@ terraform_storage_bucket_name: ($ organization_canonical $)-terraform-remote-sta
 keypair_public: ((custom_keypair.ssh_pub))
 
 #. keypair_private (required): ((custom_keypair.ssh_prv))
-#+ The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion
+#+ The private SSH key allowing ansible to run playbooks in the instance
 keypair_private: ((custom_keypair.ssh_prv))
 
 
@@ -81,54 +81,20 @@ stack_ansible_path: stack-node-gitlab/ansible/gitlab-ci
 
 
 #
-# VPC
+# Node
 #
 
-#. cidr (required): '10.0.0.0/16'
-#+ The CIDR of the VPC.
-cidr: '10.0.0.0/16'
+#. node_instance_type (required): t3a.medium
+#+ Instance type for the node instance.
+node_instance_type: t3a.medium
 
-#. private_subnets (required): ['10.0.1.0/24']
-#+ The private subnets for the VPC.
-private_subnets: ['10.0.1.0/24']
+#. node_disk_size (required): "20"
+#+ Disk size for the node instance (Go).
+node_disk_size: "20"
 
-#. public_subnets (required): ['10.0.0.0/24']
-#+ The public subnets for the VPC.
-public_subnets: ['10.0.0.0/24']
-
-
-#
-# Bastion
-#
-
-#. bastion_instance_type (required): t3.small
-#+ Instance type for the bastion.
-bastion_instance_type: t3a.small
-
-#. bastion_allowed_networks (required): ['0.0.0.0/0']
-#+ Networks allowed to connect to the bastion using SSH.
-bastion_allowed_networks: ['0.0.0.0/0']
-
-
-#
-# Nexus
-#
-
-#. nexus_instance_type (required): t3a.medium
-#+ Instance type for the Nexus Repository.
-nexus_instance_type: t3a.medium
-
-#. nexus_disk_size (required): "20"
-#+ Disk size for the Nexus Repository (Go).
-nexus_disk_size: "20"
-
-#. nexus_port (required): "8088"
-#+ Port where Nexus Repository service is exposed.
-nexus_port: "8088"
-
-#. nexus_admin_password (required): changeme
-#+ Initial admin password in case of first installation.
-nexus_admin_password: changeme
+#. node_port (required): "8088"
+#+ Port where node Repository service is exposed.
+node_port: "8081"
 
 
 #
@@ -147,22 +113,10 @@ project: ($ project $)
 #+ Name of the Cycloid Organization, used as customer variable name.
 customer: ($ organization_canonical $)
 
-#. cycloid_api_url (required): https://http-api.cycloid.io
-#+ Cycloid API URL.
-cycloid_api_url: 'https://http-api.cycloid.io'
-
-#. cycloid_api_key (required): ((custom_api-key-admin.key))
-#+ API key to grant admin acess to Cycloid API.
-cycloid_api_key: ((custom_api-key-admin.key))
-
-#. slack_hook (required): ((raw_slack-hooks.demo_channel))
-#+ URL to send notifications to cycloid-demo channel.
-slack_hook: ((raw_slack-hooks.demo_channel))
-
 #. terraform_version (required): '1.0.5'
 #+ terraform version used to execute your code.
 terraform_version: '1.0.5'
 
 #. cycloid-toolkit ansible version (required): 'v2.7'
 #+ cycloid-toolkit docker image tag to use (https://hub.docker.com/r/cycloid/cycloid-toolkit/tags).
-ansible_version: 'v2.7'
+ansible_version: 'v2.9'
