@@ -1,0 +1,36 @@
+module "node" {
+  #####################################
+  # Do not modify the following lines #
+  source   = "./module-node"
+  project  = var.project
+  env      = var.env
+  customer = var.customer
+  #####################################
+
+  #. vpc_id: ''
+  #+ The ID of the VPC where to deploy node app
+  vpc_id = "Value injected by StackForms"
+
+  #. node_instance_type: 't3.micro'
+  #+ Type of the node instance
+  node_instance_type = "Value injected by StackForms"
+
+  #. node_disk_size: 20
+  #+ Disk size for the node instance (Go)
+  node_disk_size = "Value injected by StackForms"
+
+  #. node_port: 8081
+  #+ Port where node app is exposed
+  node_port = "Value injected by StackForms"
+
+  #. keypair_public: ""
+  #+ The public SSH key, for SSH access to newly-created instances
+  keypair_public = var.keypair_public
+
+  #. extra_tags (optional): {}
+  #+ Dict of extra tags to add on resources. format { "foo" = "bar" }.
+  extra_tags = {
+    demo = true
+    monitoring_discovery = false
+  }
+}

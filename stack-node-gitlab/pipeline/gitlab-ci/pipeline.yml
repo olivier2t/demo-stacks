@@ -34,22 +34,9 @@ resource_types:
     repository: pivotalservices/concourse-curl-resource
     tag: latest
 
-- name: slack-notification
-  type: docker-image
-  source:
-    repository: cfcommunity/slack-notification-resource
-    registry_mirror: 'https://registry-mirror.owl.cycloid.io'
-    tag: latest
-
-- name: cycloid-events
-  type: docker-image
-  source:
-    registry_mirror: 'https://registry-mirror.owl.cycloid.io'
-    repository: cycloid/cycloid-events-resource
-    tag: latest
-
 
 resources:
+# The terraform backend for the tfstate file
 - name: tfstate
   type: terraform
   icon: terraform
@@ -76,7 +63,7 @@ resources:
       AWS_DEFAULT_REGION: ((aws_region))
       AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
 
-# The resource to check and get the lateste app artifact to use for deployment
+# The resource to check and get the latest app artifact
 - name: gitlab-artifact
   type: artifact-resource
   source:
@@ -104,30 +91,6 @@ resources:
     env: ((env))
     org: ((customer))
     project: ((project))
-
-# The Cycloid event resource to log events
-- name: cycloid-event
-  type: cycloid-events
-  source:
-    api_key: ((cycloid_api_key))
-    api_url: ((cycloid_api_url))
-    icon: fa-code-branch
-    organization: ((customer))
-    severity: info
-    type: Custom
-    tags:
-      - key: project
-        value: ((project))
-      - key: env
-        value: ((env))
-  icon: calendar
-
-# The Slack notification resource to send alerts
-- name: slack-alert
-  type: slack-notification
-  source:
-    url: ((slack_hook))
-  icon: slack
 
 # 60 minutes timer to trigger destroy periodically
 - name: every-1h
@@ -184,7 +147,6 @@ groups:
     - terraform-plan
     - terraform-apply
     - deploy-app
-    - post-deployment
     
 - name: destroy
   jobs:
@@ -203,9 +165,6 @@ jobs:
           trigger: true
 
         - get: git_config-terraform
-          trigger: true
-
-        - get: gitlab-artifact
           trigger: true
 
       - task: merge-stack-and-config
@@ -298,7 +257,7 @@ jobs:
             - terraform-apply
 
         - get: gitlab-artifact
-          trigger: false
+          trigger: true
 
       - task: merge-stack-and-config
         config:
@@ -323,34 +282,15 @@ jobs:
               repository: cycloid/cycloid-toolkit
               tag: ((ansible_version))
           run:
-            # Extract terraform metadata into shell and yaml scripts and store them into a new terraform-env resource
-            path: /bin/bash
-            args:
-              - '-ec'
-              - |
-                python -c "import json; print('\n'.join([ '%s: \"%s\"' % (k,v) for k, v in json.load(open('terraform/metadata', 'r')).items()]))" | tee terraform-env/env.yml
-                python -c "import json; print('\n'.join([ '%s=%s' % (k,v) for k, v in json.load(open('terraform/metadata', 'r')).items()]))" | tee terraform-env/env
-                source <(grep 'bastion\|nexus' terraform-env/env)
-                export SSH_JUMP_URL="$bastion_user@$bastion_ip"
-                echo "Ansible connects via bastion using $SSH_JUMP_URL"
-                echo "Nexus Repository will be accessible at http://$nexus_ip:$nexus_port"
-                echo "Admin password: $nexus_admin_password"
-                /usr/bin/ansible-runner
+            path: /usr/bin/ansible-runner
           caches:
             - path: ansible-playbook/roles
           inputs:
           - name: merged-stack
             path: ansible-playbook
-          - name: tfstate
-            path: "terraform"
           - name: gitlab-artifact
-          outputs:
-          - name: tfstate-env
-            path: terraform-env
 
         params:
-          #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
-          SSH_PRIVATE_KEY: ((keypair_private))
           AWS_ACCESS_KEY_ID: ((aws_access_key))
           AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
           AWS_DEFAULT_REGION: ((aws_region))
@@ -360,98 +300,6 @@ jobs:
             env: ((env))
             project: ((project))
             customer: ((customer))
-
-        on_success:
-          do:
-            - put: slack-alert
-              params:
-                env_file: tfstate-env/env
-                attachments:
-                  - author_link: 'https://www.cycloid.io/'
-                    author_name: cycloid.io
-                    color: good
-                    fallback: 'Node.js App from GitLab CI successfully deployed'
-                    fields:
-                      - short: true
-                        title: Project
-                        value: ((project))
-                      - short: true
-                        title: Environment
-                        value: ((env))
-                    pretext: Node.js App from GitLab CI was deployed successfully.
-                    title: '[SUCCESS]'
-                    title_link: 'https://console.cycloid.io/organizations/((customer))/projects/((project))/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_ID'
-                    text: |
-                      Node.js App url: http://$app_ip:$app_port
-
-            - put: cycloid-event
-              params:
-                vars_file: tfstate-env/env.yml
-                severity: info
-                message: |
-                        The project ((project)) on ((env)) environment has been deployed successfully.
-                        </br>
-                        <ul>
-                        <li>Node.js App url: <em><a target="_blank" href="http://$app_ip:$app_port">http://$app_ip:$app_port</a></em></li>
-                        </ul>
-                title: Project ((project)) on ((env)) environment deployed successfully
-
-
-  - name: post-deployment
-    max_in_flight: 1
-    build_logs_to_retain: 10
-    plan:
-      - get: tfstate
-        trigger: true
-        passed:
-          - deploy-app
-
-      - do:
-        - task: configure-project-backends
-          config:
-            platform: linux
-            image_resource:
-              type: docker-image
-              source:
-                repository: cycloid/cycloid-toolkit
-            run:
-              path: /bin/bash
-              args:
-                - '-c'
-                - |
-                  echo "Login to Cycloid API:"
-                  cy login --org ${ORGANIZATION} --api-key ${API_KEY} >output
-                  if [[ "$?" != "0" ]]; then
-                      echo "Login Error: cy returned code $?"
-                      cat output
-                      exit 1
-                  fi
-                  echo "Configuring infraView:"
-                  cy external-backend create infraview AWSRemoteTFState \
-                  --org ${ORGANIZATION} \
-                  --project ${PROJECT} \
-                  --env ${ENV} \
-                  --api-url ${API_URL} \
-                  --bucket-name ${BUCKET_NAME} \
-                  --bucket-path ${BUCKET_PATH} \
-                  --region ${AWS_REGION} \
-                  --cred ${EXTERNAL_BACKEND_AWS_CRED_NAME} >output
-                  if [[ "$?" != "0" ]]; then
-                      echo "Configuring InfraView Error: cy returned code $?"
-                      cat output
-                      exit 1
-                  fi
-
-          params:
-            ORGANIZATION: ((customer))
-            PROJECT: ((project))
-            ENV: ((env))
-            API_URL: ((cycloid_api_url))
-            API_KEY: ((cycloid_api_key))
-            BUCKET_NAME: ((terraform_storage_bucket_name))
-            BUCKET_PATH: ((project))/((env))/((project))-((env)).tfstate
-            AWS_REGION: ((aws_region))
-            EXTERNAL_BACKEND_AWS_CRED_NAME: ((external_backend_aws_cred_name))
 
 
   # Destroy the demo infrastructure after its creation (after a timer and every hour)
@@ -550,23 +398,3 @@ jobs:
             ENV: ((env))
             API_URL: ((cycloid_api_url))
             API_KEY: ((cycloid_api_key))
-
-        on_failure:
-          put: slack-alert
-          params:
-            env_file: tfstate-env/env
-            attachments:
-              - author_link: 'https://www.cycloid.io/'
-                author_name: cycloid.io
-                color: danger
-                title: '[FAILED]'
-                title_link: 'https://console.cycloid.io/organizations/((customer))/projects/((project))/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_ID'
-                pretext: Terraform destroy FAILED.
-                fallback: 'Fail to destroy Node.js App project'
-                fields:
-                  - short: true
-                    title: Project
-                    value: ((project))
-                  - short: true
-                    title: Environment
-                    value: ((env))

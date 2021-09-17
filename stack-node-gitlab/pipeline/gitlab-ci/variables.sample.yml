@@ -12,10 +12,6 @@ aws_access_key: ((aws_cycloid-demo.access_key))
 #+ Amazon AWS secret key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
 aws_secret_key: ((aws_cycloid-demo.secret_key))
 
-#. external_backend_aws_cred_name (required): cycloid-demo
-#+ Vault AWS secret name.
-external_backend_aws_cred_name: cycloid-demo
-
 #. aws_default_region (required): eu-west-1
 #+ Amazon AWS region to use for Terraform.
 aws_region: eu-west-1
@@ -59,13 +55,13 @@ config_git_branch: config
 #+ SSH key pair to fetch the config Git repository.
 config_git_private_key: ((git_github.ssh_key))
 
-#. config_terraform_path (required): ($ project $)/terraform/aws/($ environment $)
+#. config_terraform_path (required): ($ project $)/terraform/($ environment $)
 #+ Path of Terraform files in the config git repository
-config_terraform_path: ($ project $)/terraform/aws/($ environment $)
+config_terraform_path: ($ project $)/terraform/($ environment $)
 
-#. config_ansible_path (required): ($ project $)/ansible/environments
+#. config_ansible_path (required): ($ project $)/ansible/gitlab-ci/environments
 #+ Path of Ansible files in the config git repository
-config_ansible_path: ($ project $)/ansible/environments
+config_ansible_path: ($ project $)/ansible/gitlab-ci/environments
 
 #. stack_git_repository (required): https://github.com/olivier2t/demo-stacks.git
 #+ Git repository URL containing the stack.
@@ -75,13 +71,13 @@ stack_git_repository: https://github.com/olivier2t/demo-stacks.git
 #+ Branch to use on the stack Git repository.
 stack_git_branch: main
 
-#. stack_terraform_path (required): stack-nexus/terraform/aws
+#. stack_terraform_path (required): stack-node-gitlab/terraform
 #+ Path of Terraform files in the stack git repository
-stack_terraform_path: stack-nexus/terraform/aws
+stack_terraform_path: stack-node-gitlab/terraform
 
-#. stack_ansible_path (required): stack-nexus/ansible
+#. stack_ansible_path (required): stack-node-gitlab/ansible
 #+ Path of Ansible files in the stack git repository
-stack_ansible_path: stack-nexus/ansible
+stack_ansible_path: stack-node-gitlab/ansible/gitlab-ci
 
 
 #
