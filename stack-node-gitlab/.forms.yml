@@ -84,7 +84,7 @@ gitlab-ci:
         widget: simple_text
         type: string
         required: true
-        default: "vpc-832beae8"
+        default: "vpc-70ae5d18"
         required: true
       - name: "Instance type"
         description: "Instance type for the Node instance."
