@@ -1,7 +1,7 @@
-module "app" {
+module "nodeapp" {
   #####################################
   # Do not modify the following lines #
-  source   = "./module-node"
+  source   = "./module-nodeapp"
   project  = var.project
   env      = var.env
   customer = var.customer
