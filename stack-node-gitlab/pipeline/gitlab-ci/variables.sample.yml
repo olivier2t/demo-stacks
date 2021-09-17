@@ -113,6 +113,14 @@ project: ($ project $)
 #+ Name of the Cycloid Organization, used as customer variable name.
 customer: ($ organization_canonical $)
 
+#. cycloid_api_url (required): https://http-api.cycloid.io
+#+ Cycloid API URL.
+cycloid_api_url: 'https://http-api.cycloid.io'
+
+#. cycloid_api_key (required): ((custom_api-key-admin.key))
+#+ API key to grant admin acess to Cycloid API.
+cycloid_api_key: ((custom_api-key-admin.key))
+
 #. terraform_version (required): '1.0.5'
 #+ terraform version used to execute your code.
 terraform_version: '1.0.5'
