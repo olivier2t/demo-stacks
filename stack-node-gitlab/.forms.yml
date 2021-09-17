@@ -25,6 +25,15 @@ gitlab-ci:
         default: eu-west-1
         required: true
 
+    Terraform remote state file:
+      - name: "Terraform storage bucket"
+        description: "AWS S3 bucket name to store terraform remote state file."
+        key: terraform_storage_bucket_name
+        widget: simple_text
+        type: string
+        default: ($ organization_canonical $)-terraform-remote-state
+        required: true
+
     Keypair for new instances:
       - name: "Keypair public"
         description: "The public SSH key, for SSH access to newly-created instances."
