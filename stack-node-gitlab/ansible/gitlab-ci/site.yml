@@ -9,13 +9,12 @@
 
 
   tasks:
-  - name: Run the equivalent of "apt-get update" as a separate step
+  - name: apt-get update
     apt:
      update_cache: yes
   
   - name: Install required packages
     apt: name={{ item }} state=present
-    state: latest
     with_items:
       - nginx
       - nodejs

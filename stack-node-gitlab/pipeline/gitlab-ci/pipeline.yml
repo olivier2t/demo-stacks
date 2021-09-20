@@ -167,6 +167,9 @@ jobs:
         - get: git_config-terraform
           trigger: true
 
+        - get: gitlab-artifact
+          trigger: true
+
       - task: merge-stack-and-config
         config:
           <<: *merge-stack-and-config
@@ -255,9 +258,6 @@ jobs:
           trigger: true
           passed:
             - terraform-apply
-
-        - get: gitlab-artifact
-          trigger: true
 
       - task: merge-stack-and-config
         config:
