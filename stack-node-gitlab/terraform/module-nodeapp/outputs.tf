@@ -1,11 +1,6 @@
 #
 # outputs
 #
-output "vpc_id" {
-  description = "The VPC ID for the VPC"
-  value       = var.vpc_id
-}
-
 output "node_ip" {
   description = "The IP address the node instance"
   value       = aws_instance.node.public_ip

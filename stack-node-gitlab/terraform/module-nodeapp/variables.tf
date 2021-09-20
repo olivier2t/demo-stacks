@@ -3,12 +3,6 @@ variable "customer" {}
 variable "env" {}
 variable "project" {}
 
-variable "vpc_id" {
-  type        = string
-  description = "The ID of the VPC"
-  default     = ""
-}
-
 variable "node_instance_type" {
   description = "Type of the node instance"
   default     = "t3.micro"

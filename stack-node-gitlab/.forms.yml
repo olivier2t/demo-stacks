@@ -76,16 +76,17 @@ gitlab-ci:
         default: "config"
         required: true
 
+    Node App Artifact Url:
+      - name: "Node App Artifact Url"
+        key: node_artifact_url
+        type: string
+        widget: simple_text
+        description: "URL of the artifact containing the Node App to deploy."
+        default: "https://gitlab.com/olivier2t/simple-counter-app/-/archive/main/simple-counter-app-main.tar.gz"
+        required: true
+
   terraform:
     Node:
-      - name: "VPC ID"
-        description: "The ID of the VPC."
-        key: vpc_id
-        widget: simple_text
-        type: string
-        required: true
-        default: "vpc-70ae5d18"
-        required: true
       - name: "Instance type"
         description: "Instance type for the Node instance."
         key: node_instance_type

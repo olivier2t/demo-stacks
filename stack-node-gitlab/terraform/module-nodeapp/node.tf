@@ -1,7 +1,6 @@
 resource "aws_security_group" "node" {
   name        = "${var.customer}-${var.project}-${var.env}-node"
   description = "Allow accessing the node app from the internet."
-  # vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 22

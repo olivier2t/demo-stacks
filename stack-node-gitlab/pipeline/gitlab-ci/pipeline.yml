@@ -67,8 +67,8 @@ resources:
 - name: gitlab-artifact
   type: artifact-resource
   source:
-    url: https://gitlab.com/olivier2t/simple-counter-app/-/archive/main/simple-counter-app-main.tar.gz  
-    filename: simple-counter-app-main.tar.gz  
+    url: ((node_artifact_url))  
+    # filename: simple-counter-app-main.tar.gz  
 
 # The Cycloid infrapolicy resource to check terraform plan against org rules
 - name: infrapolicy
@@ -288,7 +288,6 @@ jobs:
           inputs:
           - name: merged-stack
             path: ansible-playbook
-          - name: gitlab-artifact
 
         params:
           AWS_ACCESS_KEY_ID: ((aws_access_key))
@@ -297,6 +296,7 @@ jobs:
           ANSIBLE_PLAYBOOK_PATH: ansible-playbook
           ANSIBLE_PLAYBOOK_NAME: site.yml
           EXTRA_ANSIBLE_VARS:
+            node_artifact_url: ((node_artifact_url))
             env: ((env))
             project: ((project))
             customer: ((customer))

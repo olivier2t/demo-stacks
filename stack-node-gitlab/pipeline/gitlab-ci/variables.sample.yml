@@ -96,6 +96,10 @@ node_disk_size: "20"
 #+ Port where node Repository service is exposed.
 node_port: "8081"
 
+#. node_artifact_url (required): "https://gitlab.com/olivier2t/simple-counter-app/-/archive/main/simple-counter-app-main.tar.gz"
+#+ Url of the Node app artifact in tar.gz format (deployed at Nginx root dir).
+node_artifact_url: "https://gitlab.com/olivier2t/simple-counter-app/-/archive/main/simple-counter-app-main.tar.gz"
+
 
 #
 # Default variables that shouldn't be changed except if needed

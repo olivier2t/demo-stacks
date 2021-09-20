@@ -7,10 +7,6 @@ module "nodeapp" {
   customer = var.customer
   #####################################
 
-  #. vpc_id: ''
-  #+ The ID of the VPC where to deploy node app
-  vpc_id = "Value injected by StackForms"
-
   #. node_instance_type: 't3.micro'
   #+ Type of the node instance
   node_instance_type = "Value injected by StackForms"

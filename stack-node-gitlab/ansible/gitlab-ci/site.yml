@@ -1,0 +1,51 @@
+---
+- name: install Node app
+  hosts: tag_role_node:&tag_project_{{ project }}:&tag_cycloid_io_true:&tag_env_{{ env }}
+  become: yes
+
+  vars_files:
+  - "environments/default_node.yml"
+  - ["environments/{{ env }}-node.yml", "environments/empty.yml"]
+
+
+  tasks:
+  - name: Run the equivalent of "apt-get update" as a separate step
+    apt:
+     update_cache: yes
+  
+  - name: Install required packages
+    apt: name={{ item }} state=present
+    state: latest
+    with_items:
+      - nginx
+      - nodejs
+
+  - name: Download and unarchive Node App artifact
+    unarchive:
+      src: "{{ node_artifact_url }}"
+      dest: /var/www
+      remote_src: yes
+
+  - name: Apply Nginx template
+    template:
+      src: nginx.conf.j2
+      dest: /etc/nginx/sites-available/default
+    notify: Restart Nginx
+
+  - name: Enable new site
+    file:
+      src: /etc/nginx/sites-available/default
+      dest: /etc/nginx/sites-enabled/default
+      state: link
+    notify: Restart Nginx
+
+  - name: Allow all access to tcp port 80
+    ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
+
+  - name: Enable Nginx
+    service:
+      name: nginx
+      state: started
